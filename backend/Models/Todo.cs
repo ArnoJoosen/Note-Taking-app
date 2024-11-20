@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace backend.Models
+namespace Backend.Models
 {
     public class Todo {
         public int Id { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Backend.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace mauiApp;
 
@@ -18,6 +19,7 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 
 		builder.Services.AddSingleton<TodoPage>();
+		builder.Services.AddSingleton<TodoViewModel>();
 
 		builder.Services.AddSingleton<NotePage>();
 
