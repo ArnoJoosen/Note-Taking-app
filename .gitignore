@@ -24,3 +24,4 @@ TestResults.xml
 bin
 obj
 .vs
+*.user
