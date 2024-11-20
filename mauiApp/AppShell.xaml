@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="mauiApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:mauiApp"
+    Shell.FlyoutBehavior="Locked"
+    Title="mauiApp">
+
+    <FlyoutItem Title="Home">
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Todos">
+        <ShellContent
+            Title="Todos"
+            ContentTemplate="{DataTemplate local:TodoPage}"
+            Route="TodosPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Notes">
+        <ShellContent
+            Title="Notes"
+            ContentTemplate="{DataTemplate local:NotePage}"
+            Route="NotesPage" />
+    </FlyoutItem>
+
+</Shell>
