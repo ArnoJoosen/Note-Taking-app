@@ -1,4 +1,5 @@
 ﻿namespace mauiApp;
+using mauiApp.Pages;
 
 public partial class AppShell : Shell
 {

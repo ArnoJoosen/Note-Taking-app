@@ -67,10 +67,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="NotePage.xaml">
+	  <MauiXaml Update="Pages\NotePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="TodoPage.xaml">
+	  <MauiXaml Update="Pages\TodoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

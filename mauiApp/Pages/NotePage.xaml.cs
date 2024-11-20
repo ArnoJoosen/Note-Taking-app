@@ -1,4 +1,4 @@
-namespace mauiApp;
+namespace mauiApp.Pages;
 
 public partial class NotePage : ContentPage
 {
