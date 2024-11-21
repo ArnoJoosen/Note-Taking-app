@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Backend.Models;
+using Shared.Models;
 
 namespace Backend.ViewModels
 {

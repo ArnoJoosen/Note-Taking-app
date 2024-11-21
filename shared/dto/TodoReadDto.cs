@@ -1,5 +1,5 @@
-namespace NoteTakingServer.Models {
-    public class Todo {
+namespace Shared.dto {
+    public class TdodoReadDto {
         public int Id { get; set; }
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";

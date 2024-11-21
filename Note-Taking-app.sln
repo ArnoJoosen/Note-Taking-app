@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mauiApp", "mauiApp\mauiApp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "backend", "backend\backend.csproj", "{830A49DE-451D-41D8-9B09-D4FA0407C6F5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shared", "shared\shared.csproj", "{6F858EBA-D3BE-479C-BC63-7A4BCB7C4034}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{830A49DE-451D-41D8-9B09-D4FA0407C6F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{830A49DE-451D-41D8-9B09-D4FA0407C6F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{830A49DE-451D-41D8-9B09-D4FA0407C6F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F858EBA-D3BE-479C-BC63-7A4BCB7C4034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F858EBA-D3BE-479C-BC63-7A4BCB7C4034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F858EBA-D3BE-479C-BC63-7A4BCB7C4034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F858EBA-D3BE-479C-BC63-7A4BCB7C4034}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using NoteTakingServer.Models;
+using Shared.Models;
 using NoteTakingServer.Repositories;
 
 namespace NoteTakingServer.Controllers {

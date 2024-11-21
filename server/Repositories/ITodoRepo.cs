@@ -1,4 +1,4 @@
-using NoteTakingServer.Models;
+using Shared.Models;
 
 namespace NoteTakingServer.Repositories {
     public interface ITodoRepo {
