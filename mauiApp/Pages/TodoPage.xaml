@@ -16,13 +16,26 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem Text="Delete"
+                                       BackgroundColor="Red"
+                                       Invoked="Delete_Invoked"/>
+                        </SwipeView.RightItems>
                         <Frame>
                             <StackLayout>
                                 <Label Text="{Binding Title}"
-                                   FontSize="24"/>
+                                       FontSize="24">
+                                    <Label.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        CommandParameter="{Binding .}"
+                                        Tapped="OnItemTapped"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
                                 <Label Text="{Binding Detline, StringFormat='{0:yyyy-MM-dd}'}"/>
                             </StackLayout>
                         </Frame>
+                    </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

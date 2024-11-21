@@ -8,37 +8,30 @@ using System.Threading.Tasks;
 using Shared.Models;
 using Backend.Services;
 
-namespace Backend.ViewModels
-{
-    public class TodoViewModel
-    {
+namespace Backend.ViewModels {
+    public class TodoViewModel {
         public ObservableCollection<Todo> ObservableTodoItems { get; set; } = new ObservableCollection<Todo>();
         public String InputTitle { get; set; } = "";
 
         private readonly ITodoApiServer _api = (ITodoApiServer)new MockTodoApiService();
 
-        public TodoViewModel()
-        {
+        public TodoViewModel() {
 
         }
 
-        public void UpdateTodoList()
-        {
+        public void UpdateTodoList() {
             ObservableTodoItems.Clear();
             var todos = _api.GetTodos();
-            foreach (var todo in todos)
-            {
+            foreach (var todo in todos) {
                 ObservableTodoItems.Add(todo);
             }
         }
 
-        public void addTodo()
-        {
+        public void addTodo() {
             if (InputTitle == "") {
                 return;
             }
-            Todo todo = new Todo
-            {
+            Todo todo = new Todo {
                 Id = 0,
                 Title = InputTitle,
                 Description = "",
@@ -49,8 +42,7 @@ namespace Backend.ViewModels
             ObservableTodoItems.Add(_api.AddTodo(todo));
         }
 
-        public void removeTodo(int id)
-        {
+        public void removeTodo(int id) {
             _api.DeleteTodo(id);
         }
     }
