@@ -3,23 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="mauiApp.Pages.TodoPage"
              Title="Todo">
-    <VerticalStackLayout Margin="10">
-        <CollectionView
-            ItemsSource="{Binding TodoItems}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame>
-                        <StackLayout>
-                        <Label Text="{Binding Title}" 
-                               FontSize="24"/>
-                            <Label Text="{Binding Detline, StringFormat='{0:yyyy-MM-dd}'}"/>
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Margin="10">
+        <Grid ColumnDefinitions="2*, *" Margin="10">
+            <Entry x:Name="todoText" Text="{Binding InputTitle}" Grid.Column="0" Margin="0,0,20,0"/>
+            <Button Grid.Column="1" Clicked="Add_Button_Clicked" Text="Add" IsEnabled="{Binding Source={x:Reference todoText}, Path=Text.Length, Converter={StaticResource StringLengthToBoolConverter}}"/>
+        </Grid>
+            <CollectionView
+                ItemsSource="{Binding ObservableTodoItems}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame>
+                            <StackLayout>
+                                <Label Text="{Binding Title}"
+                                   FontSize="24"/>
+                                <Label Text="{Binding Detline, StringFormat='{0:yyyy-MM-dd}'}"/>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
