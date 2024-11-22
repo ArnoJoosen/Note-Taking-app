@@ -2,40 +2,43 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="mauiApp.Pages.TodoPage"
-             Title="Todo">
+             Title="Todo"
+             xmlns:viemodel="clr-namespace:Backend.ViewModels;assembly=Backend"
+             xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
+             x:DataType="viemodel:TodoViewModel">
     <ScrollView>
         <VerticalStackLayout Margin="10">
         <Grid ColumnDefinitions="2*, *" Margin="10">
             <Entry x:Name="todoText" Text="{Binding InputTitle}" Grid.Column="0" Margin="0,0,20,0"/>
-            <Button Grid.Column="1" Clicked="Add_Button_Clicked" Text="Add" IsEnabled="{Binding Source={x:Reference todoText}, Path=Text.Length, Converter={StaticResource StringLengthToBoolConverter}}"/>
+                <Button Grid.Column="1" Command="{Binding addCommand}" Text="Add" IsEnabled="{Binding Source={x:Reference todoText}, Path=Text.Length, Converter={StaticResource StringLengthToBoolConverter}}"/>
         </Grid>
-            <CollectionView
-                ItemsSource="{Binding ObservableTodoItems}">
+            <CollectionView ItemsSource="{Binding ObservableTodoItems}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItem Text="Delete"
-                                       BackgroundColor="Red"
-                                       Invoked="Delete_Invoked"/>
-                        </SwipeView.RightItems>
-                        <Frame>
-                            <StackLayout>
-                                <Label Text="{Binding Title}"
-                                       FontSize="24">
-                                    <Label.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        CommandParameter="{Binding .}"
-                                        Tapped="OnItemTapped"/>
-                                    </Label.GestureRecognizers>
-                                </Label>
-                                <Label Text="{Binding Detline, StringFormat='{0:yyyy-MM-dd}'}"/>
-                            </StackLayout>
-                        </Frame>
-                    </SwipeView>
+                    <DataTemplate x:DataType="models:Todo">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItem Text="Delete"
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:TodoViewModel}}, Path=deleteCommand}"
+                                           CommandParameter="{Binding Id}"/>
+                            </SwipeView.RightItems>
+                            <Frame>
+                                <StackLayout>
+                                    <Label Text="{Binding Title}"
+                                           FontSize="24">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                            Tapped="OnItemTapped"
+                                            CommandParameter="{Binding .}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label Text="{Binding Detline, StringFormat='{0:yyyy-MM-dd}'}"/>
+                                </StackLayout>
+                            </Frame>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

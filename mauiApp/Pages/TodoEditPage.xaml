@@ -2,7 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="mauiApp.Pages.TodoEditPage"
-             Title="TodoEditPage">
+             Title="TodoEditPage"
+             xmlns:viemodel="clr-namespace:Backend.ViewModels;assembly=Backend"
+             xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
+             x:DataType="viemodel:TodoEditViewModel">
     <VerticalStackLayout>
         <Editor x:Name="TitleEditor"
                 Placeholder="Title"
@@ -21,7 +24,7 @@
                 VerticalOptions="Center" />
             <DatePicker x:Name="DeadlinePicker"
                         IsEnabled="{Binding HasDetline}"
-                        Date="{Binding Detline}" />
+                        Date="{Binding DetLine}" />
         </HorizontalStackLayout>
 
         <HorizontalStackLayout>

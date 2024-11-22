@@ -1,6 +1,7 @@
 ﻿using Backend.ViewModels;
 using Microsoft.Extensions.Logging;
 using mauiApp.Pages;
+using Backend.Services;
 
 namespace mauiApp;
 
@@ -18,6 +19,8 @@ public static class MauiProgram
 			});
 
 		builder.Logging.AddDebug();
+
+		builder.Services.AddSingleton<ITodoApiServer, MockTodoApiService>();
 
 		builder.Services.AddSingleton<TodoPage>();
 		builder.Services.AddSingleton<TodoViewModel>();

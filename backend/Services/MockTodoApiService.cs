@@ -7,7 +7,7 @@ using Shared.Models;
 
 namespace Backend.Services
 {
-    internal class MockTodoApiService : ITodoApiServer
+    public class MockTodoApiService : ITodoApiServer
     {
         List<Todo> _todos = new();
         int currentId = 0;
