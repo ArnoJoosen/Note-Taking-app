@@ -32,7 +32,7 @@
                                         <Label.GestureRecognizers>
                                             <TapGestureRecognizer
                                             Tapped="OnItemTapped"
-                                            CommandParameter="{Binding .}"/>
+                                            CommandParameter="{Binding Id}"/>
                                         </Label.GestureRecognizers>
                                     </Label>
                                     <Label Text="{Binding Detline, StringFormat='{0:yyyy-MM-dd}'}"/>

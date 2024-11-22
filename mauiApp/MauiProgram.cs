@@ -20,12 +20,16 @@ public static class MauiProgram
 
 		builder.Logging.AddDebug();
 
-		builder.Services.AddSingleton<ITodoApiServer, MockTodoApiService>();
+        // Todos
+        builder.Services.AddSingleton<ITodoApiServer, MockTodoApiService>();
 
-		builder.Services.AddSingleton<TodoPage>();
+        builder.Services.AddSingleton<TodoPage>();
 		builder.Services.AddSingleton<TodoViewModel>();
 
-		builder.Services.AddSingleton<NotePage>();
+        builder.Services.AddTransient<TodoEditPage>();
+
+		// Notes
+        builder.Services.AddSingleton<NotePage>();
 
 		return builder.Build();
 	}
