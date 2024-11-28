@@ -12,7 +12,7 @@
             <Entry x:Name="todoText" Text="{Binding InputTitle}" Grid.Column="0" Margin="0,0,20,0"/>
                 <Button Grid.Column="1" Command="{Binding addCommand}" Text="Add" IsEnabled="{Binding Source={x:Reference todoText}, Path=Text.Length, Converter={StaticResource StringLengthToBoolConverter}}"/>
         </Grid>
-            <CollectionView ItemsSource="{Binding ObservableTodoItems}">
+            <CollectionView ItemsSource="{Binding ObservableTodoItems}" SelectionMode="None">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
