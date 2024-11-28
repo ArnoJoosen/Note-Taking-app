@@ -6,23 +6,23 @@ using Backend.Services;
 [QueryProperty(nameof(TodoId), "id")]
 public partial class TodoEditPage : ContentPage
 {
-    private int _id;
-    ITodoApiServer _api;
+    private int _Id;
     TodoEditViewModel _vm;
+    ITodoApiServer _api;
 
-    public string TodoId {
+    public int TodoId {
+        get => _Id;
         set {
-            if (int.TryParse(value, out int id)) {
-                _id = id;
-                LoadTodo();
-            }
+            _Id = value;
+            LoadTodo();
         }
     }
 
     private void LoadTodo() {
-        _vm = new TodoEditViewModel(_api, _id);
+        _vm = new TodoEditViewModel(_api, _Id);
         BindingContext = _vm;
     }
+
     public TodoEditPage(ITodoApiServer api) {
         _api = api;
         InitializeComponent();

@@ -17,7 +17,20 @@ namespace Backend.Services {
         }
 
         public List<Todo> GetTodos() {
-            return _todos;
+        // create niew istance of todosList so that the frontend update the ui
+        // and simulate the api call
+            List<Todo> todosList = new();
+            foreach (var todo in _todos) {
+                todosList.Add(new Todo {
+                    Id = todo.Id,
+                    Title = todo.Title,
+                    Description = todo.Description,
+                    Detline = todo.Detline,
+                    HasDetline = todo.HasDetline,
+                    IsCompleted = todo.IsCompleted
+                });
+            }
+            return todosList;
         }
 
         public Todo GetTodoById(int id) {
@@ -26,7 +39,16 @@ namespace Backend.Services {
             {
                 // TODO add error
             }
-            return todo!;
+            // create niew istance of todosList so that the frontend update the ui
+            // and simulate the api call
+            return new Todo {
+                Id = todo.Id,
+                Title = todo.Title,
+                Description = todo.Description,
+                Detline = todo.Detline,
+                HasDetline = todo.HasDetline,
+                IsCompleted = todo.IsCompleted
+            };
         }
 
         public Todo UpdateTodo(Todo todo) {
@@ -45,7 +67,17 @@ namespace Backend.Services {
             existingTodo.HasDetline = todo.HasDetline;
             existingTodo.IsCompleted = todo.IsCompleted;
 
-            return existingTodo;
+            // create niew istance of todosList so that the frontend update the ui
+            // and simulate the api call
+            return new Todo
+            {
+                Id = existingTodo.Id,
+                Title = existingTodo.Title,
+                Description = existingTodo.Description,
+                Detline = existingTodo.Detline,
+                HasDetline = existingTodo.HasDetline,
+                IsCompleted = existingTodo.IsCompleted
+            };
         }
 
         public void DeleteTodo(int id) {
@@ -67,7 +99,16 @@ namespace Backend.Services {
                 IsCompleted = todo.IsCompleted
             };
             _todos.Add(todonew);
-            return todo;
+            // create niew istance of todosList so that the frontend update the ui
+            // and simulate the api call
+            return new Todo {
+                Id = todonew.Id,
+                Title = todonew.Title,
+                Description = todonew.Description,
+                Detline = todonew.Detline,
+                HasDetline = todonew.HasDetline,
+                IsCompleted = todonew.IsCompleted
+            };
         }
     }
 }

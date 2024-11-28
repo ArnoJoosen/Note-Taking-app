@@ -11,7 +11,8 @@ public partial class TodoPage : ContentPage {
         InitializeComponent();
     }
 
-    protected override async void OnAppearing() {
+    protected override void OnAppearing() {
+        base.OnAppearing();
         _vm.UpdateTodoList();
     }
     public async void OnItemTapped(object sender, TappedEventArgs e) {

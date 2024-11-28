@@ -25,8 +25,8 @@ namespace Backend.ViewModels
         }
 
         public void UpdateTodoList() {
-            ObservableTodoItems.Clear();
             var todos = _api.GetTodos();
+            ObservableTodoItems.Clear();
             foreach (var todo in todos) {
                 ObservableTodoItems.Add(todo);
             }
