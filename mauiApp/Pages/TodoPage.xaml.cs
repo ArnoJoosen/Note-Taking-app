@@ -18,7 +18,6 @@ public partial class TodoPage : ContentPage {
     public async void OnItemTapped(object sender, TappedEventArgs e) {
         if (e.Parameter is int tappedItem) {
             await Shell.Current.GoToAsync($"TodoEditPage?id={tappedItem}");
-            System.Console.WriteLine("Tapped item: " + tappedItem);
         }
     }
 }

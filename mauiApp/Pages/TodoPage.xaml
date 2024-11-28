@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="mauiApp.Pages.TodoPage"
              Title="Todo"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viemodel="clr-namespace:Backend.ViewModels;assembly=Backend"
              xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
              x:DataType="viemodel:TodoViewModel">
@@ -42,7 +43,11 @@
                                 </Frame.Triggers>
                                 <Grid ColumnDefinitions="*, Auto">
                                     <HorizontalStackLayout Grid.Column="0" Spacing="10">
-                                        <CheckBox IsChecked="{Binding IsCompleted}" />
+                                        <Button Text="✓" 
+                                            WidthRequest="10" 
+                                            HeightRequest="10"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:TodoViewModel}}, Path=changeDonStateCommand}"
+                                            CommandParameter="{Binding Id}"/>
                                         <StackLayout>
                                             <Label Text="{Binding Title}"
                                                    FontSize="24">

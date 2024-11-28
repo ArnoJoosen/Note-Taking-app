@@ -17,11 +17,13 @@ namespace Backend.ViewModels
 
         public ICommand addCommand { get; private set; }
         public ICommand deleteCommand { get; private set; }
+        public ICommand changeDonStateCommand { get; private set; }
 
         public TodoViewModel(ITodoApiServer api) {
             _api = api;
             addCommand = new DelegateCommand(p => AddTodo());
             deleteCommand = new DelegateCommand(p => DeleteTodo((int)p));
+            changeDonStateCommand = new DelegateCommand(p => ChangeDoneState((int)p));
         }
 
         public void UpdateTodoList() {
@@ -53,6 +55,16 @@ namespace Backend.ViewModels
             if (todoToRemove != null) {
                 ObservableTodoItems.Remove(todoToRemove);
             }
+        }
+
+        public void ChangeDoneState(int id) {
+            var todo = ObservableTodoItems.FirstOrDefault(t => t.Id == id);
+            if (todo == null) {
+                return;
+            }
+            todo.IsCompleted = !todo.IsCompleted;
+            _api.UpdateTodo(todo);
+            UpdateTodoList();
         }
     }
 }
