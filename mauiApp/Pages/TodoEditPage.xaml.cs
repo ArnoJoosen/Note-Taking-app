@@ -3,27 +3,23 @@ using Shared.Models;
 using Backend.ViewModels;
 using Backend.Services;
 
-[QueryProperty("Id", "id")]
+[QueryProperty(nameof(TodoId), "id")]
 public partial class TodoEditPage : ContentPage
 {
     private int _id;
     ITodoApiServer _api;
     TodoEditViewModel _vm;
 
-    public string Id
-    {
-        set
-        {
-            if (int.TryParse(value, out int id))
-            {
+    public string TodoId {
+        set {
+            if (int.TryParse(value, out int id)) {
                 _id = id;
                 LoadTodo();
             }
         }
     }
 
-    private void LoadTodo()
-    {
+    private void LoadTodo() {
         _vm = new TodoEditViewModel(_api, _id);
         BindingContext = _vm;
     }
@@ -32,8 +28,7 @@ public partial class TodoEditPage : ContentPage
         InitializeComponent();
     }
 
-    protected override bool OnBackButtonPressed()
-    {
+    protected override bool OnBackButtonPressed() {
         Navigation.PopAsync();
         return true;
     }

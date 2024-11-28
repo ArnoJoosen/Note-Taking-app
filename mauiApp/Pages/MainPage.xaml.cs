@@ -4,14 +4,11 @@ public partial class MainPage : ContentPage
 {
 	int count = 0;
 
-	public MainPage()
-	{
+	public MainPage() {
 		InitializeComponent();
 	}
 
-	private void OnTodosClicked(object sender, EventArgs e)
-    {
-		
+	private void OnTodosClicked(object sender, EventArgs e) {
+
     }
 }
-

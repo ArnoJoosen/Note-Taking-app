@@ -2,8 +2,7 @@ namespace mauiApp.Pages;
 
 public partial class NotePage : ContentPage
 {
-	public NotePage()
-	{
+	public NotePage() {
 		InitializeComponent();
 	}
 }
