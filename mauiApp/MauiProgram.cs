@@ -1,13 +1,12 @@
 ﻿using Backend.ViewModels;
 using Microsoft.Extensions.Logging;
 using mauiApp.Pages;
+using Backend.Services;
 
 namespace mauiApp;
 
-public static class MauiProgram
-{
-	public static MauiApp CreateMauiApp()
-	{
+public static class MauiProgram {
+	public static MauiApp CreateMauiApp() {
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
@@ -19,10 +18,16 @@ public static class MauiProgram
 
 		builder.Logging.AddDebug();
 
-		builder.Services.AddSingleton<TodoPage>();
+        // Todos
+        builder.Services.AddSingleton<ITodoApiServer, MockTodoApiService>();
+
+        builder.Services.AddSingleton<TodoPage>();
 		builder.Services.AddSingleton<TodoViewModel>();
 
-		builder.Services.AddSingleton<NotePage>();
+        builder.Services.AddTransient<TodoEditPage>();
+
+        // Notes
+        builder.Services.AddSingleton<NotePage>();
 
 		return builder.Build();
 	}
