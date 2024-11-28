@@ -6,10 +6,8 @@ using Backend.Services;
 using System.Windows.Input;
 using Backend;
 
-namespace Backend.ViewModels
-{
-    public class TodoViewModel
-    {
+namespace Backend.ViewModels {
+    public class TodoViewModel {
         public ObservableCollection<Todo> ObservableTodoItems { get; set; } = new ObservableCollection<Todo>();
         public String InputTitle { get; set; } = "";
 

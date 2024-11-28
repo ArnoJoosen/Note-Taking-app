@@ -48,6 +48,7 @@
                                             HeightRequest="10"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:TodoViewModel}}, Path=changeDonStateCommand}"
                                             CommandParameter="{Binding Id}"/>
+                                        <!-- TODO change the text check icon to a check icon -->
                                         <StackLayout>
                                             <Label Text="{Binding Title}"
                                                    FontSize="24">
