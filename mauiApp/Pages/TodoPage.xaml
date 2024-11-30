@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="mauiApp.Pages.TodoPage"
              Title="Todo"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viemodel="clr-namespace:Backend.ViewModels;assembly=Backend"
              xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
+             xmlns:dto="clr-namespace:Shared.dto;assembly=Shared"
              x:DataType="viemodel:TodoViewModel">
     <ScrollView>
         <VerticalStackLayout Margin="10">
@@ -18,8 +18,8 @@
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Todo">
-                        <SwipeView x:Name="swipeView">
+                    <DataTemplate x:DataType="dto:TodoListItemReadDto">
+                        <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItems Mode="Execute">
                                 <SwipeItem Text="Delete"
@@ -32,8 +32,10 @@
                         <SwipeView.LeftItems>
                             <SwipeItems Mode="Execute">
                                     <SwipeItem Text="Done"
-                                           BackgroundColor="Green"/>
-                            </SwipeItems>
+                                           BackgroundColor="Green"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:TodoViewModel}}, Path=changeDonStateCommand}"
+                                           CommandParameter="{Binding Id}"/>
+                                </SwipeItems>
                         </SwipeView.LeftItems>
                             <Frame>
                                 <Frame.Triggers>
@@ -43,17 +45,25 @@
                                 </Frame.Triggers>
                                 <Grid ColumnDefinitions="*, Auto">
                                     <HorizontalStackLayout Grid.Column="0" Spacing="10">
-                                        <Button Text="✓" 
-                                            WidthRequest="10" 
+                                        <Button Text="✓"
+                                            WidthRequest="10"
                                             HeightRequest="10"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:TodoViewModel}}, Path=changeDonStateCommand}"
-                                            CommandParameter="{Binding Id}"/>
+                                            CommandParameter="{Binding Id}">
+                                            <Button.IsVisible>
+                                                <OnIdiom x:TypeArguments="x:Boolean" Desktop="True" Phone="False" Tablet="False" TV="False" />
+                                            </Button.IsVisible>
+                                        </Button>
                                         <!-- TODO change the text check icon to a check icon -->
                                         <StackLayout>
                                             <Label Text="{Binding Title}"
                                                    FontSize="24">
                                             </Label>
-                                            <Label Text="{Binding Detline, StringFormat='{0:yyyy-MM-dd}'}"/>
+                                            <Label Text="{Binding Detline, StringFormat='{0:dd-MM-yyyy}'}">
+                                                <Label.IsVisible>
+                                                    <Binding Path="HasDetline"/>
+                                                </Label.IsVisible>
+                                            </Label>
                                         </StackLayout>
                                     </HorizontalStackLayout>
                                     <Button Grid.Column="1"

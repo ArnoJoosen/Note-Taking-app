@@ -5,19 +5,21 @@ using Shared.Models;
 using Backend.Services;
 using System.Windows.Input;
 using Backend;
+using Shared.dto;
 
-namespace Backend.ViewModels {
+namespace Backend.ViewModels
+{
     public class TodoViewModel {
-        public ObservableCollection<Todo> ObservableTodoItems { get; set; } = new ObservableCollection<Todo>();
+        public ObservableCollection<TodoListItemReadDto> ObservableTodoItems { get; set; } = new();
         public String InputTitle { get; set; } = "";
 
-        private ITodoApiServer _api;
+        private IApiService _api;
 
         public ICommand addCommand { get; private set; }
         public ICommand deleteCommand { get; private set; }
         public ICommand changeDonStateCommand { get; private set; }
 
-        public TodoViewModel(ITodoApiServer api) {
+        public TodoViewModel(IApiService api) {
             _api = api;
             addCommand = new DelegateCommand(p => AddTodo());
             deleteCommand = new DelegateCommand(p => DeleteTodo((int)p));
@@ -25,7 +27,7 @@ namespace Backend.ViewModels {
         }
 
         public void UpdateTodoList() {
-            var todos = _api.GetTodos();
+            List<TodoListItemReadDto> todos = _api.GetTodos();
             ObservableTodoItems.Clear();
             foreach (var todo in todos) {
                 ObservableTodoItems.Add(todo);
@@ -36,7 +38,7 @@ namespace Backend.ViewModels {
             if (InputTitle == "") {
                 return;
             }
-            Todo todo = new Todo {
+            TodoWriteDto todo = new TodoWriteDto {
                 Id = 0,
                 Title = InputTitle,
                 Description = "",
@@ -61,7 +63,7 @@ namespace Backend.ViewModels {
                 return;
             }
             todo.IsCompleted = !todo.IsCompleted;
-            _api.UpdateTodo(todo);
+            _api.UpdateTodoState(id, todo.IsCompleted);
             UpdateTodoList();
         }
     }

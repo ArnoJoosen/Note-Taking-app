@@ -5,9 +5,9 @@ using Shared.Models;
 namespace mauiApp.Pages;
 
 [QueryProperty(nameof(NodeId), "id")]
-public partial class NotePage : ContentPage {
+public partial class NoteEditPage : ContentPage {
     private int _Id;
-    NodeViewModel _vm;
+    NodeEditViewModel _vm;
     IApiService _api;
     public int NodeId {
         get => _Id;
@@ -17,17 +17,18 @@ public partial class NotePage : ContentPage {
         }
     }
 
-    public NotePage(IApiService api) {
+	public NoteEditPage(IApiService api) {
         _api = api;
         InitializeComponent();
-    }
+	}
 
-    private void LoadNode() {
+	private void LoadNode() {
         _vm = new(_api, _Id);
         BindingContext = _vm;
     }
 
-    public async void OnEditClicked(object sender, EventArgs e) {
-        await Shell.Current.GoToAsync($"NoteEditPage?id={_Id}");
+    public void OnSaveClicked(object sender, EventArgs e) {
+        _vm.Save();
+        Navigation.PopAsync();
     }
 }
