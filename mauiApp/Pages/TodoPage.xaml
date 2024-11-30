@@ -19,7 +19,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="dto:TodoListItemReadDto">
-                        <SwipeView x:Name="swipeView">
+                        <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItems Mode="Execute">
                                 <SwipeItem Text="Delete"
@@ -59,7 +59,11 @@
                                             <Label Text="{Binding Title}"
                                                    FontSize="24">
                                             </Label>
-                                            <Label Text="{Binding Detline, StringFormat='{0:dd-MM-yyyy}'}"/>
+                                            <Label Text="{Binding Detline, StringFormat='{0:dd-MM-yyyy}'}">
+                                                <Label.IsVisible>
+                                                    <Binding Path="HasDetline"/>
+                                                </Label.IsVisible>
+                                            </Label>
                                         </StackLayout>
                                     </HorizontalStackLayout>
                                     <Button Grid.Column="1"

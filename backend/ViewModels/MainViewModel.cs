@@ -24,10 +24,12 @@ namespace Backend.ViewModels {
         }
 
         public void UpdateNodeFavorites() {
+            FavoritesNods.Clear();
             _api.GetFavoriteNodes().ForEach(n => FavoritesNods.Add(n));
         }
 
         public void UpdateTodoNotDone() {
+            NotCompletedTodos.Clear();
             _api.GetNotCompletedTodos().ForEach(t => NotCompletedTodos.Add(t));
         }
 
