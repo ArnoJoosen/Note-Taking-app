@@ -19,5 +19,6 @@ namespace Backend.Services
         public NodeReadDto UpdateNode(NodeWriteDto node);
         public void DeleteNode(int id);
         public NodeReadDto AddNode(NodeWriteDto node);
+        public void ChageNodeFavorite(int id, bool isFavorite);
     }
 }

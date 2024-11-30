@@ -6,7 +6,11 @@
              xmlns:viemodel="clr-namespace:Backend.ViewModels;assembly=Backend"
              xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
              xmlns:dto="clr-namespace:Shared.dto;assembly=Shared"
+             xmlns:page="clr-namespace:mauiApp.Pages"
              x:DataType="viemodel:NodesViewModel">
+    <ContentPage.Resources>
+        <page:BoolToFavoriteColor x:Key="BoolToFavoriteColor"/>
+    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout>
             <Grid ColumnDefinitions="2*, *" Margin="10">
@@ -30,27 +34,34 @@
                                 </SwipeItems>
                             </SwipeView.RightItems>
                             <Frame>
-                                <Grid ColumnDefinitions="*, Auto">
-                                    <HorizontalStackLayout Grid.Column="0" Spacing="10">
-                                        <StackLayout>
-                                            <Label Text="{Binding Title}"
-                                                FontSize="24">
-                                            </Label>
-                                            <Label Text="{Binding CreatedAt, StringFormat='{0:dd-MM-yyyy}'}"/>
-                                        </StackLayout>
-                                    </HorizontalStackLayout>
-                                    <Button Grid.Column="1"
-                                        Text="🗑️"
-                                        FontSize="24"
-                                        Background="Transparent"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NodesViewModel}}, Path=deleteCommand}"
-                                        CommandParameter="{Binding Id}">
-                                        <!-- TODO change the text trach icon to a trash icon -->
-                                        <Button.IsVisible>
-                                            <OnIdiom x:TypeArguments="x:Boolean" Desktop="True" Phone="False" Tablet="False" TV="False" />
-                                        </Button.IsVisible>
-                                    </Button>
-                                </Grid>
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <Button Grid.Column="0"
+                                    Text="⭐"
+                                    FontSize="24"
+                                    Background="Transparent"
+                                    TextColor="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteColor}}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NodesViewModel}}, Path=ChangeNodeFavoriteCommand}"
+                                    CommandParameter="{Binding Id}"/>
+                                <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                                    <StackLayout>
+                                        <Label Text="{Binding Title}"
+                                            FontSize="24">
+                                        </Label>
+                                        <Label Text="{Binding CreatedAt, StringFormat='{0:dd-MM-yyyy}'}"/>
+                                    </StackLayout>
+                                </HorizontalStackLayout>
+                                <Button Grid.Column="2"
+                                    Text="🗑️"
+                                    FontSize="24"
+                                    Background="Transparent"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NodesViewModel}}, Path=deleteCommand}"
+                                    CommandParameter="{Binding Id}">
+                                    <!-- TODO change the text trach icon to a trash icon -->
+                                    <Button.IsVisible>
+                                        <OnIdiom x:TypeArguments="x:Boolean" Desktop="True" Phone="False" Tablet="False" TV="False" />
+                                    </Button.IsVisible>
+                                </Button>
+                            </Grid>
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer
                                         Tapped="OnItemTapped"

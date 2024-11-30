@@ -17,12 +17,14 @@ namespace Backend.ViewModels {
 
         public ICommand addCommand { get; private set; }
         public ICommand deleteCommand { get; private set; }
+        public ICommand ChangeNodeFavoriteCommand { get; private set; }
 
         public NodesViewModel(IApiService api) {
             _api = api;
             UpdateNodeList();
             addCommand = new DelegateCommand(p => AddNode());
             deleteCommand = new DelegateCommand(p => DeleteNode((int)p));
+            ChangeNodeFavoriteCommand = new DelegateCommand(p => ChangeNodeFavorite((int)p));
         }
 
         public void UpdateNodeList() {
@@ -44,6 +46,12 @@ namespace Backend.ViewModels {
             if (nodeToRemove != null) {
                 ObservableNotes.Remove(nodeToRemove);
             }
+        }
+
+        public void ChangeNodeFavorite(int id) {
+            bool faborite = ObservableNotes.FirstOrDefault(n => n.Id == id).IsFavorite;
+            _api.ChageNodeFavorite(id, !faborite);
+            UpdateNodeList();
         }
     }
 }

@@ -19,9 +19,9 @@ namespace Backend.Services
             _todos.Add(new Todo { Id = currentTodoId++, Title = "Second todo", Description = "This is the second todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = false });
             _todos.Add(new Todo { Id = currentTodoId++, Title = "Third todo", Description = "This is the third todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = false });
 
-            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the first node", Title = "First node", CreatedAt = DateTime.Now });
-            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the second node", Title = "Second node", CreatedAt = DateTime.Now });
-            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the third node", Title = "Third node", CreatedAt = DateTime.Now });
+            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the first node", Title = "First node", CreatedAt = DateTime.Now, IsFavorite = true });
+            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the second node", Title = "Second node", CreatedAt = DateTime.Now, IsFavorite = false });
+            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the third node", Title = "Third node", CreatedAt = DateTime.Now, IsFavorite = false });
         }
 
         // -------------------- Todo API --------------------
@@ -135,7 +135,8 @@ namespace Backend.Services
                 nodesList.Add(new NodeListItemReadDto {
                     Id = node.Id,
                     Title = node.Title,
-                    CreatedAt = node.CreatedAt
+                    CreatedAt = node.CreatedAt,
+                    IsFavorite = node.IsFavorite
                 });
             }
             return nodesList;
@@ -203,6 +204,14 @@ namespace Backend.Services
                 Content = nodenew.Content,
                 CreatedAt = nodenew.CreatedAt
             };
+        }
+
+        public void ChageNodeFavorite(int id, bool isFavorite) {
+            Node? node = _nodes.Find(n => n.Id == id);
+            if (node == null) {
+                return; // TODO add error
+            }
+            node.IsFavorite = isFavorite;
         }
     }
 }
