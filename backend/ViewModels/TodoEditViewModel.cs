@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Backend.Services;
+using Shared.dto;
 using Shared.Models;
 
 namespace Backend.ViewModels {
@@ -22,7 +23,7 @@ namespace Backend.ViewModels {
         public TodoEditViewModel(ITodoApiServer api, int id) {
             _api = api;
             ItemId = id;
-            Todo todo = _api.GetTodoById(id);
+            TodoReadDto todo = _api.GetTodoById(id);
             Title = todo.Title;
             Description = todo.Description;
             HasDetline = todo.HasDetline;
@@ -30,7 +31,7 @@ namespace Backend.ViewModels {
         }
 
         public void Save() {
-            _api.UpdateTodo(new Todo { Id = ItemId, Title = Title, Description = Description, HasDetline = HasDetline, Detline = DetLine, IsCompleted = IsCompleted });
+            _api.UpdateTodo(new TodoWriteDto { Id = ItemId, Title = Title, Description = Description, HasDetline = HasDetline, Detline = DetLine, IsCompleted = IsCompleted });
         }
     }
 }

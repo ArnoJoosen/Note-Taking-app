@@ -1,12 +1,14 @@
+using Shared.dto;
 using Shared.Models;
 
 namespace Backend.Services
 {
     public interface ITodoApiServer {
-        public List<Todo> GetTodos();
-        public Todo GetTodoById(int id);
-        public Todo UpdateTodo(Todo todo);
+        public List<TodoListItemReadDto> GetTodos();
+        public TodoReadDto GetTodoById(int id);
+        public TodoReadDto UpdateTodo(TodoWriteDto todo);
+        public void UpdateTodoState(int id, bool isCompleted);
         public void DeleteTodo(int id);
-        public Todo AddTodo(Todo todo);
+        public TodoListItemReadDto AddTodo(TodoWriteDto todo);
     }
 }
