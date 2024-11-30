@@ -42,6 +42,21 @@ namespace Backend.Services
             return todosList;
         }
 
+        public List<TodoListItemReadDto> GetNotCompletedTodos() {
+            List<TodoListItemReadDto> todosList = new();
+            _todos.Where(t => t.IsCompleted == false).ToList().ForEach(todo =>{
+                todosList.Add(new TodoListItemReadDto
+                {
+                    Id = todo.Id,
+                    Title = todo.Title,
+                    Detline = todo.Detline,
+                    HasDetline = todo.HasDetline,
+                    IsCompleted = todo.IsCompleted
+                });
+            });
+            return todosList;
+        }
+
         public TodoReadDto GetTodoById(int id) {
             Todo? todo = _todos.Where(t => t.Id == id).First();
             if (todo == null)
@@ -139,6 +154,19 @@ namespace Backend.Services
                     IsFavorite = node.IsFavorite
                 });
             }
+            return nodesList;
+        }
+
+        public List<NodeListItemReadDto> GetFavoriteNodes() {
+            List<NodeListItemReadDto> nodesList = new();
+            _nodes.Where(n => n.IsFavorite == true).ToList().ForEach(node => {
+                nodesList.Add(new NodeListItemReadDto {
+                    Id = node.Id,
+                    Title = node.Title,
+                    CreatedAt = node.CreatedAt,
+                    IsFavorite = node.IsFavorite
+                });
+            });
             return nodesList;
         }
 

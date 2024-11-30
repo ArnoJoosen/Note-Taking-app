@@ -7,6 +7,7 @@ namespace Backend.Services
 
         // Todo api methods
         public List<TodoListItemReadDto> GetTodos();
+        public List<TodoListItemReadDto> GetNotCompletedTodos();
         public TodoReadDto GetTodoById(int id);
         public TodoReadDto UpdateTodo(TodoWriteDto todo);
         public void UpdateTodoState(int id, bool isCompleted);
@@ -15,6 +16,7 @@ namespace Backend.Services
 
         // Node api methods
         public List<NodeListItemReadDto> GetNodes();
+        public List<NodeListItemReadDto> GetFavoriteNodes();
         public NodeReadDto GetNodeById(int id);
         public NodeReadDto UpdateNode(NodeWriteDto node);
         public void DeleteNode(int id);
