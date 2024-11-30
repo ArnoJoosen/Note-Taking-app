@@ -8,15 +8,23 @@ using Shared.Models;
 
 namespace Backend.Services
 {
-    public class MockTodoApiService : ITodoApiServer {
+    public class MockApiService : IApiService {
         List<Todo> _todos = new();
-        int currentId = 0;
+        List<Node> _nodes = new();
+        int currentTodoId = 0;
+        int currentNodeId = 0;
 
-        public MockTodoApiService() {
-            _todos.Add(new Todo { Id = currentId++, Title = "First todo", Description = "This is the first todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = true });
-            _todos.Add(new Todo { Id = currentId++, Title = "Second todo", Description = "This is the second todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = false });
-            _todos.Add(new Todo { Id = currentId++, Title = "Third todo", Description = "This is the third todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = false });
+        public MockApiService() {
+            _todos.Add(new Todo { Id = currentTodoId++, Title = "First todo", Description = "This is the first todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = true });
+            _todos.Add(new Todo { Id = currentTodoId++, Title = "Second todo", Description = "This is the second todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = false });
+            _todos.Add(new Todo { Id = currentTodoId++, Title = "Third todo", Description = "This is the third todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = false });
+
+            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the first node", Title = "First node", CreatedAt = DateTime.Now });
+            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the second node", Title = "Second node", CreatedAt = DateTime.Now });
+            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the third node", Title = "Third node", CreatedAt = DateTime.Now });
         }
+
+        // -------------------- Todo API --------------------
 
         public List<TodoListItemReadDto> GetTodos() {
         // create niew istance of todosList so that the frontend update the ui
@@ -101,7 +109,7 @@ namespace Backend.Services
 
         public TodoListItemReadDto AddTodo(TodoWriteDto todo) {
             Todo todonew = new Todo {
-                Id = currentId++,
+                Id = currentTodoId++,
                 Title = todo.Title,
                 Description = todo.Description,
                 Detline = todo.Detline,
@@ -117,6 +125,83 @@ namespace Backend.Services
                 Detline = todonew.Detline,
                 HasDetline = todonew.HasDetline,
                 IsCompleted = todonew.IsCompleted
+            };
+        }
+
+        // -------------------- Node API --------------------
+        public List<NodeListItemReadDto> GetNodes() {
+            List<NodeListItemReadDto> nodesList = new();
+            foreach (var node in _nodes) {
+                nodesList.Add(new NodeListItemReadDto {
+                    Id = node.Id,
+                    Title = node.Title,
+                    CreatedAt = node.CreatedAt
+                });
+            }
+            return nodesList;
+        }
+
+        public NodeReadDto GetNodeById(int id) {
+            Node? node = _nodes.Where(n => n.Id == id).First();
+            if (node == null)
+            {
+                return null; // TODO add error
+            }
+            return new NodeReadDto
+            {
+                Id = node.Id,
+                Title = node.Title,
+                Content = node.Content,
+                CreatedAt = node.CreatedAt
+            };
+        }
+
+        public NodeReadDto UpdateNode(NodeWriteDto node) {
+            if (node == null)
+            {
+                return null; // TODO add error
+            }
+
+            Node? existingNode = _nodes.Find(n => n.Id == node.Id);
+            if (existingNode == null)
+            {
+                return null; // TODO add error
+            }
+
+            existingNode.Title = node.Title;
+            existingNode.Content = node.Content;
+
+            return new NodeReadDto
+            {
+                Id = existingNode.Id,
+                Title = existingNode.Title,
+                Content = existingNode.Content,
+                CreatedAt = existingNode.CreatedAt
+            };
+        }
+
+        public void DeleteNode(int id) {
+            Node? node = _nodes.Find(n => n.Id == id);
+            if (node == null) {
+                return; // TODO add error
+            }
+            _nodes.Remove(node);
+        }
+        public NodeReadDto AddNode(NodeWriteDto node) {
+            Node nodenew = new Node
+            {
+                Id = currentNodeId++,
+                Title = node.Title,
+                Content = node.Content,
+                CreatedAt = DateTime.Now
+            };
+            _nodes.Add(nodenew);
+            return new NodeReadDto
+            {
+                Id = nodenew.Id,
+                Title = nodenew.Title,
+                Content = nodenew.Content,
+                CreatedAt = nodenew.CreatedAt
             };
         }
     }

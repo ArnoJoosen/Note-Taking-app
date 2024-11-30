@@ -19,7 +19,7 @@ public static class MauiProgram {
 		builder.Logging.AddDebug();
 
         // Todos
-        builder.Services.AddSingleton<ITodoApiServer, MockTodoApiService>();
+        builder.Services.AddSingleton<IApiService, MockApiService>();
 
         builder.Services.AddSingleton<TodoPage>();
 		builder.Services.AddSingleton<TodoViewModel>();
@@ -28,7 +28,8 @@ public static class MauiProgram {
 
         // Notes
         builder.Services.AddSingleton<NotePage>();
+		builder.Services.AddSingleton<NodeViewModel>();
 
-		return builder.Build();
+        return builder.Build();
 	}
 }
