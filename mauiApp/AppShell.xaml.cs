@@ -8,5 +8,6 @@ public partial class AppShell : Shell {
         Routing.RegisterRoute(nameof(NotePages), typeof(NotePages));
         Routing.RegisterRoute("TodoEditPage", typeof(TodoEditPage));
         Routing.RegisterRoute("NotePage", typeof(NotePage));
+        Routing.RegisterRoute("NoteEditPage", typeof(NoteEditPage));
     }
 }

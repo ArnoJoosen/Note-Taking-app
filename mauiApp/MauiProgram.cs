@@ -31,6 +31,7 @@ public static class MauiProgram {
 		builder.Services.AddSingleton<NodesViewModel>();
 
 		builder.Services.AddTransient<NotePage>();
+		builder.Services.AddTransient<NoteEditPage>();
 
         return builder.Build();
 	}

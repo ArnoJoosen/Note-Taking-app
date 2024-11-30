@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="mauiApp.Pages.NoteEditPage"
+             Title="NoteEditPage"
+             xmlns:viemodel="clr-namespace:Backend.ViewModels;assembly=Backend"
+             xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
+             x:DataType="viemodel:NodeEditViewModel">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="💾" Clicked="OnSaveClicked"/>
+    </ContentPage.ToolbarItems>
+    <VerticalStackLayout>
+        <Label
+                Text="Title:"
+                VerticalOptions="Center"
+                HorizontalOptions="Start" />
+        <Editor
+                Text="{Binding Title}"
+                Margin="10"
+                VerticalOptions="FillAndExpand"/>
+        <Label
+                Text="Content: "
+                VerticalOptions="Center"
+                HorizontalOptions="Start"/>
+        <Editor
+            Text="{Binding Content}"
+            VerticalOptions="FillAndExpand"
+            Margin="10"
+            AutoSize="TextChanges"/>
+    </VerticalStackLayout>
+</ContentPage>

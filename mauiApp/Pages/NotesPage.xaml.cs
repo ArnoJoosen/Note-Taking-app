@@ -14,7 +14,7 @@ public partial class NotePages : ContentPage {
 	}
 
     protected override void OnAppearing() {
-
+        _vm.UpdateNodeList();
     }
     public async void OnItemTapped(object sender, TappedEventArgs e) {
         if (e.Parameter is int tappedItem) {
