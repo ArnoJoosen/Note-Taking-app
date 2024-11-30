@@ -1,21 +1,33 @@
-using System.Collections.ObjectModel;
+using Backend.Services;
 using Backend.ViewModels;
-using Shared.dto;
+using Shared.Models;
 
 namespace mauiApp.Pages;
 
+[QueryProperty(nameof(NodeId), "id")]
 public partial class NotePage : ContentPage {
-
+    private int _Id;
     NodeViewModel _vm;
-    public NotePage(NodeViewModel vm) {
-        _vm = vm;
-        BindingContext = _vm;
-        InitializeComponent();
-	}
-
-    protected override void OnAppearing() {
-
+    IApiService _api;
+    public int NodeId {
+        get => _Id;
+        set {
+            _Id = value;
+            LoadNode();
+        }
     }
-    public async void OnItemTapped(object sender, TappedEventArgs e) {
+
+    public NotePage(IApiService api) {
+        _api = api;
+        InitializeComponent();
+    }
+
+    private void LoadNode() {
+        _vm = new NodeViewModel(_api, _Id);
+        BindingContext = _vm;
+    }
+
+    public async void OnEditClicked(object sender, EventArgs e) {
+        //await Shell.Current.GoToAsync($"NoteEditPage?id={_Id}");
     }
 }

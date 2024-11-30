@@ -2,70 +2,22 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="mauiApp.Pages.NotePage"
-             Title="Notes"
+             Title="NotePage"
              xmlns:viemodel="clr-namespace:Backend.ViewModels;assembly=Backend"
              xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
-             xmlns:dto="clr-namespace:Shared.dto;assembly=Shared">
-    <ScrollView>
-        <VerticalStackLayout>
-            <Grid ColumnDefinitions="2*, *" Margin="10">
-                <Entry x:Name="todoText" Text="{Binding InputTitle}" Grid.Column="0" Margin="0,0,20,0"/>
-                <Button Grid.Column="1" Command="{Binding addCommand}" Text="Add" IsEnabled="{Binding Source={x:Reference todoText}, Path=Text.Length, Converter={StaticResource StringLengthToBoolConverter}}"/>
-            </Grid>
-            <CollectionView ItemsSource="{Binding ObservableNotes}" SelectionMode="None">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dto:NodeListItemReadDto">
-                        <SwipeView x:Name="swipeView">
-                            <SwipeView.RightItems>
-                                <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="Delete"
-                                       BackgroundColor="Red"
-                                       Routing.Route="10"
-                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NodeViewModel}}, Path=deleteCommand}"
-                                       CommandParameter="{Binding Id}"/>
-                                </SwipeItems>
-                            </SwipeView.RightItems>
-                            <SwipeView.LeftItems>
-                                <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="Done"
-                                        BackgroundColor="Green"/>
-                                </SwipeItems>
-                            </SwipeView.LeftItems>
-                            <Frame>
-                                <Grid ColumnDefinitions="*, Auto">
-                                    <HorizontalStackLayout Grid.Column="0" Spacing="10">
-                                        <StackLayout>
-                                            <Label Text="{Binding Title}"
-                                                FontSize="24">
-                                            </Label>
-                                            <Label Text="{Binding CreatedAt, StringFormat='{0:dd-MM-yyyy}'}"/>
-                                        </StackLayout>
-                                    </HorizontalStackLayout>
-                                    <Button Grid.Column="1"
-                                        Text="🗑️"
-                                        FontSize="24"
-                                        Background="Transparent"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NodeViewModel}}, Path=deleteCommand}"
-                                        CommandParameter="{Binding Id}">
-                                        <!-- TODO change the text trach icon to a trash icon -->
-                                        <Button.IsVisible>
-                                            <OnIdiom x:TypeArguments="x:Boolean" Desktop="True" Phone="False" Tablet="False" TV="False" />
-                                        </Button.IsVisible>
-                                    </Button>
-                                </Grid>
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Tapped="OnItemTapped"
-                                        CommandParameter="{Binding Id}"/>
-                                </Frame.GestureRecognizers>
-                            </Frame>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </ScrollView>
+             x:DataType="viemodel:NodeViewModel">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="✏️" Clicked="OnEditClicked"/>
+    </ContentPage.ToolbarItems>
+    <VerticalStackLayout>
+    <Grid RowDefinitions="Auto,Auto,*" Padding="10">
+        <Label Grid.Row="0" FontSize="Large" Text="{Binding Title}" />
+
+        <Label Grid.Row="1" FontSize="Small" Text="{Binding CreatedAt, StringFormat='{0:g}'}" />
+
+        <ScrollView Grid.Row="2" Margin="0,20,0,0">
+            <Label Text="{Binding Content}" TextType="Text" />
+        </ScrollView>
+    </Grid>
+    </VerticalStackLayout>
 </ContentPage>

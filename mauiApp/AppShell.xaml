@@ -24,7 +24,7 @@
     <FlyoutItem Title="Notes">
         <ShellContent
             Title="Notes"
-            ContentTemplate="{DataTemplate pages:NotePage}"
+            ContentTemplate="{DataTemplate pages:NotePages}"
             Route="NotesPage" />
     </FlyoutItem>
 

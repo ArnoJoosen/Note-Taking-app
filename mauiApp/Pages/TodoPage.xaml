@@ -32,8 +32,10 @@
                         <SwipeView.LeftItems>
                             <SwipeItems Mode="Execute">
                                     <SwipeItem Text="Done"
-                                           BackgroundColor="Green"/>
-                            </SwipeItems>
+                                           BackgroundColor="Green"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:TodoViewModel}}, Path=changeDonStateCommand}"
+                                           CommandParameter="{Binding Id}"/>
+                                </SwipeItems>
                         </SwipeView.LeftItems>
                             <Frame>
                                 <Frame.Triggers>
@@ -47,7 +49,11 @@
                                             WidthRequest="10"
                                             HeightRequest="10"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:TodoViewModel}}, Path=changeDonStateCommand}"
-                                            CommandParameter="{Binding Id}"/>
+                                            CommandParameter="{Binding Id}">
+                                            <Button.IsVisible>
+                                                <OnIdiom x:TypeArguments="x:Boolean" Desktop="True" Phone="False" Tablet="False" TV="False" />
+                                            </Button.IsVisible>
+                                        </Button>
                                         <!-- TODO change the text check icon to a check icon -->
                                         <StackLayout>
                                             <Label Text="{Binding Title}"
