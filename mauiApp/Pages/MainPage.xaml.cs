@@ -7,7 +7,7 @@ public partial class MainPage : ContentPage {
     int count = 0;
     MainViewModel _vm;
 
-    public MainPage(MainViewModel vm) {
+    public MainPage(MainViewModel vm, HttpClient httpClient) {
         InitializeComponent();
         _vm = vm;
         BindingContext = vm;

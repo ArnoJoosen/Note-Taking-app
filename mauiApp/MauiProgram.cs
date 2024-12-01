@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using mauiApp.Pages;
 using Backend.Services;
+using backend.Services;
 
 namespace mauiApp;
 
@@ -17,8 +18,9 @@ public static class MauiProgram {
 
 		builder.Logging.AddDebug();
 
-		builder.Services.AddSingleton<IApiTodoService, MockApiTodoService>();
-		builder.Services.AddSingleton<IApiNoteService, MockApiNoteService>();
+        builder.Services.AddSingleton<HttpClient>(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5110") });
+		builder.Services.AddSingleton<IApiTodoService, ApiTodoService>();
+		builder.Services.AddSingleton<IApiNoteService, ApiNodeService>();
 
         // pages
         // Main
