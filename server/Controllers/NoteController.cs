@@ -6,19 +6,19 @@ using Shared.Models;
 namespace Server.Controllers {
     [ApiController]
     [Route("api/node")]
-    public class NodeController : Controller {
-        INodeRepo _nodeRepo;
-        public NodeController(INodeRepo nodeRepo) {
+    public class NoteController : Controller {
+        INoTeRepo _nodeRepo;
+        public NoteController(INoTeRepo nodeRepo) {
             _nodeRepo = nodeRepo;
         }
 
         [HttpGet]
         public ActionResult GetAllNodes() {
-            IEnumerable<Node> nodes = _nodeRepo.GetAllNodes();
+            IEnumerable<Note> nodes = _nodeRepo.GetAllNodes();
             // map to dto
-            List<NodeListItemReadDto> readNodes = new();
+            List<NoteListItemReadDto> readNodes = new();
             foreach (var node in nodes) {
-                readNodes.Add(new NodeListItemReadDto {
+                readNodes.Add(new NoteListItemReadDto {
                     Id = node.Id,
                     Title = node.Title,
                     CreatedAt = node.CreatedAt,
@@ -30,11 +30,11 @@ namespace Server.Controllers {
 
         [HttpGet("favorite")]
         public ActionResult GetFavoriteNodes() {
-            IEnumerable<Node> nodes = _nodeRepo.GetFavoriteNodes();
+            IEnumerable<Note> nodes = _nodeRepo.GetFavoriteNodes();
             // map to dto
-            List<NodeListItemReadDto> readNodes = new();
+            List<NoteListItemReadDto> readNodes = new();
             foreach (var node in nodes) {
-                readNodes.Add(new NodeListItemReadDto {
+                readNodes.Add(new NoteListItemReadDto {
                     Id = node.Id,
                     Title = node.Title,
                     CreatedAt = node.CreatedAt,
@@ -47,9 +47,9 @@ namespace Server.Controllers {
         [HttpGet("{id}")]
         public ActionResult GetNodeById(int id) {
             try {
-                Node node = _nodeRepo.GetNodeById(id);
+                Note node = _nodeRepo.GetNodeById(id);
                 // map to dto
-                return Ok(new NodeReadDto {
+                return Ok(new NoteReadDto {
                     Id = node.Id,
                     Title = node.Title,
                     Content = node.Content,
@@ -61,9 +61,9 @@ namespace Server.Controllers {
         }
 
         [HttpPost]
-        public ActionResult CreateNode(NodeWriteDto newNode) {
-            Node node = _nodeRepo.CreateNode(newNode.Title, newNode.Content);
-            return Ok(new NodeReadDto {
+        public ActionResult CreateNode(NoteWriteDto newNode) {
+            Note node = _nodeRepo.CreateNode(newNode.Title, newNode.Content);
+            return Ok(new NoteReadDto {
                 Id = node.Id,
                 Title = node.Title,
                 Content = node.Content,
@@ -72,9 +72,9 @@ namespace Server.Controllers {
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateNodeById(int id, NodeWriteDto wNode) {
+        public ActionResult UpdateNodeById(int id, NoteWriteDto wNode) {
             try {
-                Node uNode = new Node {
+                Note uNode = new Note {
                     Id = id,
                     Title = wNode.Title,
                     Content = wNode.Content

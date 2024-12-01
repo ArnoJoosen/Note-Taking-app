@@ -8,42 +8,42 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace backend.Services {
-    public class ApiNodeService : IApiNoteService {
+    public class ApiNoteService : IApiNoteService {
         private readonly HttpClient _httpClient;
 
-        public ApiNodeService(HttpClient httpClient) {
+        public ApiNoteService(HttpClient httpClient) {
             _httpClient = httpClient;
         }
 
-        public List<NodeListItemReadDto> GetNodes() {
+        public List<NoteListItemReadDto> GetNodes() {
             var response = _httpClient.GetAsync("http://localhost:5110/api/node").Result;
             response.EnsureSuccessStatusCode();
             // Todo error handling
-            var nodes = response.Content.ReadFromJsonAsync<List<NodeListItemReadDto>>().Result;
+            var nodes = response.Content.ReadFromJsonAsync<List<NoteListItemReadDto>>().Result;
             return nodes;
         }
-        public List<NodeListItemReadDto> GetFavoriteNodes() {
+        public List<NoteListItemReadDto> GetFavoriteNodes() {
             var response = _httpClient.GetAsync("http://localhost:5110/api/node/favorite").Result;
             response.EnsureSuccessStatusCode();
             // Todo error handling
-            var nodes = response.Content.ReadFromJsonAsync<List<NodeListItemReadDto>>().Result;
+            var nodes = response.Content.ReadFromJsonAsync<List<NoteListItemReadDto>>().Result;
             return nodes;
         }
-        public NodeReadDto GetNodeById(int id) {
+        public NoteReadDto GetNodeById(int id) {
             var response = _httpClient.GetAsync($"http://localhost:5110/api/node/{id}").Result;
             response.EnsureSuccessStatusCode();
             // Todo error handling
-            var node = response.Content.ReadFromJsonAsync<NodeReadDto>().Result;
+            var node = response.Content.ReadFromJsonAsync<NoteReadDto>().Result;
             return node;
         }
-        public NodeReadDto CreateNode(NodeWriteDto node) {
+        public NoteReadDto CreateNode(NoteWriteDto node) {
             var response = _httpClient.PostAsJsonAsync("http://localhost:5110/api/node", node).Result;
             response.EnsureSuccessStatusCode();
             // Todo error handling
-            var createdNode = response.Content.ReadFromJsonAsync<NodeReadDto>().Result;
+            var createdNode = response.Content.ReadFromJsonAsync<NoteReadDto>().Result;
             return createdNode;
         }
-        public void UpdateNode(NodeWriteDto node, int id) {
+        public void UpdateNode(NoteWriteDto node, int id) {
             var response = _httpClient.PutAsJsonAsync($"http://localhost:5110/api/node/{id}", node).Result;
             response.EnsureSuccessStatusCode();
             // Todo error handling

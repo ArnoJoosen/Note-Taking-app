@@ -20,7 +20,7 @@ public static class MauiProgram {
 
         builder.Services.AddSingleton<HttpClient>(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5110") });
 		builder.Services.AddSingleton<IApiTodoService, ApiTodoService>();
-		builder.Services.AddSingleton<IApiNoteService, ApiNodeService>();
+		builder.Services.AddSingleton<IApiNoteService, ApiNoteService>();
 
         // pages
         // Main
@@ -35,7 +35,7 @@ public static class MauiProgram {
 
         // Notes
         builder.Services.AddSingleton<NotePages>();
-		builder.Services.AddSingleton<NodesViewModel>();
+		builder.Services.AddSingleton<NotesViewModel>();
 
 		builder.Services.AddTransient<NotePage>();
 		builder.Services.AddTransient<NoteEditPage>();

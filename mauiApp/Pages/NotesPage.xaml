@@ -7,7 +7,7 @@
              xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
              xmlns:dto="clr-namespace:Shared.dto;assembly=Shared"
              xmlns:page="clr-namespace:mauiApp.Pages"
-             x:DataType="viemodel:NodesViewModel">
+             x:DataType="viemodel:NotesViewModel">
     <ContentPage.Resources>
         <page:BoolToFavoriteColor x:Key="BoolToFavoriteColor"/>
     </ContentPage.Resources>
@@ -22,14 +22,14 @@
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dto:NodeListItemReadDto">
+                    <DataTemplate x:DataType="dto:NoteListItemReadDto">
                         <SwipeView x:Name="swipeView">
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Execute">
                                     <SwipeItem Text="Delete"
                                        BackgroundColor="Red"
                                        Routing.Route="10"
-                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NodesViewModel}}, Path=deleteCommand}"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NotesViewModel}}, Path=deleteCommand}"
                                        CommandParameter="{Binding Id}"/>
                                 </SwipeItems>
                             </SwipeView.RightItems>
@@ -40,7 +40,7 @@
                                     FontSize="24"
                                     Background="Transparent"
                                     TextColor="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteColor}}"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NodesViewModel}}, Path=ChangeNodeFavoriteCommand}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NotesViewModel}}, Path=ChangeNodeFavoriteCommand}"
                                     CommandParameter="{Binding Id}"/>
                                 <HorizontalStackLayout Grid.Column="1" Spacing="10">
                                     <StackLayout>
@@ -54,7 +54,7 @@
                                     Text="🗑️"
                                     FontSize="24"
                                     Background="Transparent"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NodesViewModel}}, Path=deleteCommand}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:NotesViewModel}}, Path=deleteCommand}"
                                     CommandParameter="{Binding Id}">
                                     <!-- TODO change the text trach icon to a trash icon -->
                                     <Button.IsVisible>

@@ -6,7 +6,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ITodoRepo, MockTodoRepo>();
-builder.Services.AddSingleton<INodeRepo, MockNodeRepo>();
+builder.Services.AddSingleton<INoTeRepo, MockNoteRepo>();
 
 var app = builder.Build();
 

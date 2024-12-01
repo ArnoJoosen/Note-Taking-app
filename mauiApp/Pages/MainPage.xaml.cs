@@ -18,7 +18,7 @@ public partial class MainPage : ContentPage {
         _vm.UpdateTodoNotDone();
     }
 
-    public async void OnNodeTapped(object sender, TappedEventArgs e) {
+    public async void OnNoteTapped(object sender, TappedEventArgs e) {
         if (e.Parameter is int tappedItem) {
             await Shell.Current.GoToAsync($"NotePage?id={tappedItem}");
         }

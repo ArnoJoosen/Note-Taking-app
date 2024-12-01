@@ -7,13 +7,13 @@ namespace mauiApp.Pages;
 [QueryProperty(nameof(NodeId), "id")]
 public partial class NotePage : ContentPage {
     private int _Id;
-    NodeViewModel _vm;
+    NoteViewModel _vm;
     IApiNoteService _api;
     public int NodeId {
         get => _Id;
         set {
             _Id = value;
-            LoadNode();
+            LoadNote();
         }
     }
 
@@ -22,7 +22,7 @@ public partial class NotePage : ContentPage {
         InitializeComponent();
     }
 
-    private void LoadNode() {
+    private void LoadNote() {
         _vm = new(_api, _Id);
         BindingContext = _vm;
     }

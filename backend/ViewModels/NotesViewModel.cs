@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Backend.ViewModels {
-    public class NodesViewModel {
-        public ObservableCollection<NodeListItemReadDto> ObservableNotes { get; set; } = new ObservableCollection<NodeListItemReadDto>();
+    public class NotesViewModel {
+        public ObservableCollection<NoteListItemReadDto> ObservableNotes { get; set; } = new ObservableCollection<NoteListItemReadDto>();
         public String InputTitle { get; set; } = "";
 
         IApiNoteService _api;
@@ -19,7 +19,7 @@ namespace Backend.ViewModels {
         public ICommand deleteCommand { get; private set; }
         public ICommand ChangeNodeFavoriteCommand { get; private set; }
 
-        public NodesViewModel(IApiNoteService api) {
+        public NotesViewModel(IApiNoteService api) {
             _api = api;
             UpdateNodeList();
             addCommand = new DelegateCommand(p => AddNode());
@@ -35,7 +35,7 @@ namespace Backend.ViewModels {
         }
 
         public void AddNode() {
-            NodeWriteDto node = new NodeWriteDto { Title = InputTitle, Content = "" };
+            NoteWriteDto node = new NoteWriteDto { Title = InputTitle, Content = "" };
             _api.CreateNode(node);
             UpdateNodeList();
         }

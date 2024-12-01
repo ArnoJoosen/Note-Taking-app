@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace Backend.ViewModels {
     public class MainViewModel {
-        public ObservableCollection<NodeListItemReadDto> FavoritesNods { get; set; } = new ObservableCollection<NodeListItemReadDto>();
+        public ObservableCollection<NoteListItemReadDto> FavoritesNods { get; set; } = new ObservableCollection<NoteListItemReadDto>();
         public ObservableCollection<TodoListItemReadDto> NotCompletedTodos { get; set; } = new ObservableCollection<TodoListItemReadDto>();
         public ICommand CompleteTodoCommand { get; private set; }
 
