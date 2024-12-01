@@ -46,7 +46,7 @@ namespace Backend.ViewModels
                 HasDetline = false,
                 IsCompleted = false
             };
-            ObservableTodoItems.Add(_api.AddTodo(todo));
+            ObservableTodoItems.Add(_api.CreateTodo(todo));
         }
 
         public void DeleteTodo(int id) {

@@ -36,7 +36,7 @@ namespace Backend.ViewModels {
 
         public void AddNode() {
             NodeWriteDto node = new NodeWriteDto { Title = InputTitle };
-            _api.AddNode(node);
+            _api.CreateNode(node);
             UpdateNodeList();
         }
 

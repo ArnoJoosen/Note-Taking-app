@@ -122,7 +122,7 @@ namespace Backend.Services
             _todos.Remove(todo);
         }
 
-        public TodoListItemReadDto AddTodo(TodoWriteDto todo) {
+        public TodoListItemReadDto CreateTodo(TodoWriteDto todo) {
             Todo todonew = new Todo {
                 Id = currentTodoId++,
                 Title = todo.Title,
@@ -216,7 +216,7 @@ namespace Backend.Services
             }
             _nodes.Remove(node);
         }
-        public NodeReadDto AddNode(NodeWriteDto node) {
+        public NodeReadDto CreateNode(NodeWriteDto node) {
             Node nodenew = new Node
             {
                 Id = currentNodeId++,
