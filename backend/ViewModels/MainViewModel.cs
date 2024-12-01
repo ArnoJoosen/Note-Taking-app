@@ -20,14 +20,16 @@ namespace Backend.ViewModels {
             CompleteTodoCommand = new DelegateCommand(p => CompleteTodoItem((int)p));
         }
 
-        public void UpdateNodeFavorites() {
+        public async void UpdateNodeFavorites() {
             FavoritesNods.Clear();
-            _apiNode.GetFavoriteNodes().ForEach(n => FavoritesNods.Add(n));
+            var nodes = await _apiNode.GetFavoriteNodesAsync();
+            nodes.ForEach(n => FavoritesNods.Add(n));
         }
 
-        public void UpdateTodoNotDone() {
+        public async void UpdateTodoNotDone() {
             NotCompletedTodos.Clear();
-            _apiTodo.GetNotCompletedTodos().ForEach(t => NotCompletedTodos.Add(t));
+            var nodes = _apiTodo.GetNotCompletedTodos();
+             nodes.ForEach(t => NotCompletedTodos.Add(t));
         }
 
         public void CompleteTodoItem(int id) {

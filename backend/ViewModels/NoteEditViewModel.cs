@@ -22,7 +22,7 @@ namespace Backend.ViewModels {
                 Title = Title,
                 Content = Content
             };
-            _api.UpdateNode(node, Id);
+            _api.UpdateNodeAsync(node, Id);
         }
     }
 }

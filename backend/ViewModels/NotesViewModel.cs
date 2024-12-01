@@ -27,21 +27,21 @@ namespace Backend.ViewModels {
             ChangeNodeFavoriteCommand = new DelegateCommand(p => ChangeNodeFavorite((int)p));
         }
 
-        public void UpdateNodeList() {
+        public async void UpdateNodeList() {
             ObservableNotes.Clear();
-            foreach (var node in _api.GetNodes()) {
+            foreach (var node in await _api.GetNodesAsync()) {
                 ObservableNotes.Add(node);
             }
         }
 
         public void AddNode() {
             NoteWriteDto node = new NoteWriteDto { Title = InputTitle, Content = "" };
-            _api.CreateNode(node);
+            _api.CreateNodeAsync(node);
             UpdateNodeList();
         }
 
         public void DeleteNode(int id) {
-            _api.DeleteNode(id);
+            _api.DeleteNodeAsync(id);
             var nodeToRemove = ObservableNotes.FirstOrDefault(n => n.Id == id);
             if (nodeToRemove != null) {
                 ObservableNotes.Remove(nodeToRemove);
@@ -50,7 +50,7 @@ namespace Backend.ViewModels {
 
         public void ChangeNodeFavorite(int id) {
             bool faborite = ObservableNotes.FirstOrDefault(n => n.Id == id).IsFavorite;
-            _api.ChageNodeFavorite(id, !faborite);
+            _api.ChageNodeFavoriteAsync(id, !faborite);
             UpdateNodeList();
         }
     }
