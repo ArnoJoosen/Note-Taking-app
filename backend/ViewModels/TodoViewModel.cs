@@ -39,7 +39,6 @@ namespace Backend.ViewModels
                 return;
             }
             TodoWriteDto todo = new TodoWriteDto {
-                Id = 0,
                 Title = InputTitle,
                 Description = "",
                 Detline = DateTime.Now,

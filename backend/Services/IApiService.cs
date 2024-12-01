@@ -9,7 +9,7 @@ namespace Backend.Services
         public List<TodoListItemReadDto> GetNotCompletedTodos();
         public TodoReadDto GetTodoById(int id);
         public TodoListItemReadDto CreateTodo(TodoWriteDto todo);
-        public TodoReadDto UpdateTodo(TodoWriteDto todo);
+        public TodoReadDto UpdateTodo(TodoWriteDto todo, int id);
         public void UpdateTodoState(int id, bool isCompleted);
         public void DeleteTodo(int id);
 
@@ -18,7 +18,7 @@ namespace Backend.Services
         public List<NodeListItemReadDto> GetFavoriteNodes();
         public NodeReadDto GetNodeById(int id);
         public NodeReadDto CreateNode(NodeWriteDto node);
-        public NodeReadDto UpdateNode(NodeWriteDto node);
+        public void UpdateNode(NodeWriteDto node, int id);
         public void DeleteNode(int id);
         public void ChageNodeFavorite(int id, bool isFavorite);
     }

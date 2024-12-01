@@ -44,12 +44,11 @@ namespace Backend.ViewModels {
 
         public void Save() {
             _api.UpdateTodo(new TodoWriteDto {
-                Id = ItemId,
                 Title = Title,
                 Description = Description,
                 HasDetline = HasDetline,
                 Detline = DetLine,
-                IsCompleted = IsCompleted });
+                IsCompleted = IsCompleted }, ItemId);
         }
     }
 }

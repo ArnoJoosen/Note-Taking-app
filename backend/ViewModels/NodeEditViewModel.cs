@@ -19,11 +19,10 @@ namespace Backend.ViewModels {
 
         public void Save() {
             NodeWriteDto node = new NodeWriteDto {
-                Id = Id,
                 Title = Title,
                 Content = Content
             };
-            _api.UpdateNode(node);
+            _api.UpdateNode(node, Id);
         }
     }
 }

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Shared.dto;
 using Shared.Models;
 
-namespace Backend.Services
-{
+namespace Backend.Services {
     public class MockApiService : IApiService {
         List<Todo> _todos = new();
         List<Node> _nodes = new();
@@ -27,8 +26,8 @@ namespace Backend.Services
         // -------------------- Todo API --------------------
 
         public List<TodoListItemReadDto> GetTodos() {
-        // create niew istance of todosList so that the frontend update the ui
-        // and simulate the api call
+            // create niew istance of todosList so that the frontend update the ui
+            // and simulate the api call
             List<TodoListItemReadDto> todosList = new();
             foreach (var todo in _todos) {
                 todosList.Add(new TodoListItemReadDto {
@@ -44,9 +43,8 @@ namespace Backend.Services
 
         public List<TodoListItemReadDto> GetNotCompletedTodos() {
             List<TodoListItemReadDto> todosList = new();
-            _todos.Where(t => t.IsCompleted == false).ToList().ForEach(todo =>{
-                todosList.Add(new TodoListItemReadDto
-                {
+            _todos.Where(t => t.IsCompleted == false).ToList().ForEach(todo => {
+                todosList.Add(new TodoListItemReadDto {
                     Id = todo.Id,
                     Title = todo.Title,
                     Detline = todo.Detline,
@@ -59,9 +57,8 @@ namespace Backend.Services
 
         public TodoReadDto GetTodoById(int id) {
             Todo? todo = _todos.Where(t => t.Id == id).First();
-            if (todo == null)
-            {
-                // TODO add error
+            if (todo == null) {
+                throw new Exception("Todo not found");
             }
             // create niew istance of todosList so that the frontend update the ui
             // and simulate the api call
@@ -75,14 +72,14 @@ namespace Backend.Services
             };
         }
 
-        public TodoReadDto UpdateTodo(TodoWriteDto todo) {
+        public TodoReadDto UpdateTodo(TodoWriteDto todo, int id) {
             if (todo == null) {
-                return null; // TODO add error
+                throw new Exception("Todo not found");
             }
 
-            Todo? existingTodo = _todos.Find(t => t.Id == todo.Id);
+            Todo? existingTodo = _todos.Find(t => t.Id == id);
             if (existingTodo == null) {
-                return null; // TODO add error
+                throw new Exception("Todo not found");
             }
 
             existingTodo.Title = todo.Title;
@@ -93,8 +90,7 @@ namespace Backend.Services
 
             // create niew istance of todosList so that the frontend update the ui
             // and simulate the api call
-            return new TodoReadDto
-            {
+            return new TodoReadDto {
                 Id = existingTodo.Id,
                 Title = existingTodo.Title,
                 Description = existingTodo.Description,
@@ -106,17 +102,15 @@ namespace Backend.Services
 
         public void UpdateTodoState(int id, bool isCompleted) {
             Todo? todo = _todos.Find(t => t.Id == id);
-            if (todo == null)
-            {
-                return; // TODo add error
+            if (todo == null) {
+                throw new Exception("Todo not found");
             }
             todo.IsCompleted = isCompleted;
         }
 
         public void DeleteTodo(int id) {
             Todo? todo = _todos.Find(t => t.Id == id);
-            if (todo == null)
-            {
+            if (todo == null) {
                 return;
             }
             _todos.Remove(todo);
@@ -172,12 +166,10 @@ namespace Backend.Services
 
         public NodeReadDto GetNodeById(int id) {
             Node? node = _nodes.Where(n => n.Id == id).First();
-            if (node == null)
-            {
-                return null; // TODO add error
+            if (node == null) {
+                throw new Exception("Node not found");
             }
-            return new NodeReadDto
-            {
+            return new NodeReadDto {
                 Id = node.Id,
                 Title = node.Title,
                 Content = node.Content,
@@ -185,48 +177,36 @@ namespace Backend.Services
             };
         }
 
-        public NodeReadDto UpdateNode(NodeWriteDto node) {
-            if (node == null)
-            {
-                return null; // TODO add error
+        public void UpdateNode(NodeWriteDto node, int id) {
+            if (node == null) {
+                throw new Exception("Node not found");
             }
 
-            Node? existingNode = _nodes.Find(n => n.Id == node.Id);
-            if (existingNode == null)
-            {
-                return null; // TODO add error
+            Node? existingNode = _nodes.Find(n => n.Id == id);
+            if (existingNode == null) {
+                throw new Exception("Node not found");
             }
 
             existingNode.Title = node.Title;
             existingNode.Content = node.Content;
-
-            return new NodeReadDto
-            {
-                Id = existingNode.Id,
-                Title = existingNode.Title,
-                Content = existingNode.Content,
-                CreatedAt = existingNode.CreatedAt
-            };
         }
 
         public void DeleteNode(int id) {
             Node? node = _nodes.Find(n => n.Id == id);
             if (node == null) {
-                return; // TODO add error
+                throw new Exception("Node not found");
             }
             _nodes.Remove(node);
         }
         public NodeReadDto CreateNode(NodeWriteDto node) {
-            Node nodenew = new Node
-            {
+            Node nodenew = new Node {
                 Id = currentNodeId++,
                 Title = node.Title,
                 Content = node.Content,
                 CreatedAt = DateTime.Now
             };
             _nodes.Add(nodenew);
-            return new NodeReadDto
-            {
+            return new NodeReadDto {
                 Id = nodenew.Id,
                 Title = nodenew.Title,
                 Content = nodenew.Content,
@@ -237,7 +217,7 @@ namespace Backend.Services
         public void ChageNodeFavorite(int id, bool isFavorite) {
             Node? node = _nodes.Find(n => n.Id == id);
             if (node == null) {
-                return; // TODO add error
+                throw new Exception("Node not found");
             }
             node.IsFavorite = isFavorite;
         }
