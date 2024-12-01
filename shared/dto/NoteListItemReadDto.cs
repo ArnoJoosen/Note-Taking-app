@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Shared.dto {
-    public class NodeWriteDto {
+    public class NoteListItemReadDto {
+        public int Id { get; set; }
         public string Title { get; set; }
-        public string Content { get; set; } 
+        public DateTime CreatedAt { get; set; }
+        public bool IsFavorite { get; set; }
     }
 }

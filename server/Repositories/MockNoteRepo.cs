@@ -1,33 +1,33 @@
 ﻿using Shared.Models;
 
 namespace Server.Repositories {
-    public class MockNodeRepo : INodeRepo {
+    public class MockNoteRepo : INoTeRepo {
         int _curentId = 0;
 
-        List<Node> nodes = new();
+        List<Note> nodes = new();
 
-        public MockNodeRepo() {
-            nodes.Add(new Node { Id = _curentId++, Title = "First node", Content = "This is the first node", CreatedAt = DateTime.Now, IsFavorite = true });
-            nodes.Add(new Node { Id = _curentId++, Title = "Second node", Content = "This is the second node", CreatedAt = DateTime.Now, IsFavorite = false });
-            nodes.Add(new Node { Id = _curentId++, Title = "Third node", Content = "This is the third node", CreatedAt = DateTime.Now, IsFavorite = false });
+        public MockNoteRepo() {
+            nodes.Add(new Note { Id = _curentId++, Title = "First node", Content = "This is the first node", CreatedAt = DateTime.Now, IsFavorite = true });
+            nodes.Add(new Note { Id = _curentId++, Title = "Second node", Content = "This is the second node", CreatedAt = DateTime.Now, IsFavorite = false });
+            nodes.Add(new Note { Id = _curentId++, Title = "Third node", Content = "This is the third node", CreatedAt = DateTime.Now, IsFavorite = false });
         }
 
-        public IEnumerable<Node> GetAllNodes() {
+        public IEnumerable<Note> GetAllNodes() {
             return nodes;
         }
 
-        public IEnumerable<Node> GetFavoriteNodes() {
+        public IEnumerable<Note> GetFavoriteNodes() {
             return nodes.Where(node => node.IsFavorite);
         }
-        public Node GetNodeById(int id) {
+        public Note GetNodeById(int id) {
             var node = nodes.FirstOrDefault(node => node.Id == id);
             if (node == null) {
                 throw new KeyNotFoundException($"Node with Id {id} not found.");
             }
             return node;
         }
-        public Node CreateNode(string Title, string Content) {
-            Node node = new Node {
+        public Note CreateNode(string Title, string Content) {
+            Note node = new Note {
                 Id = _curentId++,
                 Title = Title,
                 Content = Content,
@@ -38,11 +38,11 @@ namespace Server.Repositories {
             return node;
         }
 
-        public void UpdateNodeById(Node node) {
+        public void UpdateNodeById(Note node) {
             if (node == null) {
                 throw new ArgumentNullException(nameof(node));
             }
-            Node? oNode = nodes.FirstOrDefault(n => n.Id == node.Id);
+            Note? oNode = nodes.FirstOrDefault(n => n.Id == node.Id);
             if (node != null) {
                 oNode.Title = node.Title;
                 oNode.Content = node.Content;

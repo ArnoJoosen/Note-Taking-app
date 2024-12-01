@@ -57,12 +57,8 @@ namespace Backend.ViewModels
         }
 
         public void ChangeDoneState(int id) {
-            var todo = ObservableTodoItems.FirstOrDefault(t => t.Id == id);
-            if (todo == null) {
-                return;
-            }
-            todo.IsCompleted = !todo.IsCompleted;
-            _api.UpdateTodoState(id, todo.IsCompleted);
+            bool done = ObservableTodoItems.First(t => t.Id == id).IsCompleted;
+            _api.UpdateTodoState(id, !done);
             UpdateTodoList();
         }
     }

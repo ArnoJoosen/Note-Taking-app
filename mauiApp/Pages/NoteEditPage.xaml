@@ -5,7 +5,7 @@
              Title="NoteEditPage"
              xmlns:viemodel="clr-namespace:Backend.ViewModels;assembly=Backend"
              xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
-             x:DataType="viemodel:NodeEditViewModel">
+             x:DataType="viemodel:NoteEditViewModel">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="💾" Clicked="OnSaveClicked"/>
     </ContentPage.ToolbarItems>

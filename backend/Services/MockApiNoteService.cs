@@ -4,20 +4,20 @@ using Shared.Models;
 namespace Backend.Services {
     public class MockApiNoteService : IApiNoteService {
         int currentNodeId = 0;
-        List<Node> _nodes = new();
+        List<Note> _nodes = new();
 
         public MockApiNoteService() {
-            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the first node", Title = "First node", CreatedAt = DateTime.Now, IsFavorite = true });
-            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the second node", Title = "Second node", CreatedAt = DateTime.Now, IsFavorite = false });
-            _nodes.Add(new Node { Id = currentNodeId++, Content = "This is the third node", Title = "Third node", CreatedAt = DateTime.Now, IsFavorite = false });
+            _nodes.Add(new Note { Id = currentNodeId++, Content = "This is the first node", Title = "First node", CreatedAt = DateTime.Now, IsFavorite = true });
+            _nodes.Add(new Note { Id = currentNodeId++, Content = "This is the second node", Title = "Second node", CreatedAt = DateTime.Now, IsFavorite = false });
+            _nodes.Add(new Note { Id = currentNodeId++, Content = "This is the third node", Title = "Third node", CreatedAt = DateTime.Now, IsFavorite = false });
         }
 
 
         // -------------------- Node API --------------------
-        public List<NodeListItemReadDto> GetNodes() {
-            List<NodeListItemReadDto> nodesList = new();
+        public List<NoteListItemReadDto> GetNodes() {
+            List<NoteListItemReadDto> nodesList = new();
             foreach (var node in _nodes) {
-                nodesList.Add(new NodeListItemReadDto {
+                nodesList.Add(new NoteListItemReadDto {
                     Id = node.Id,
                     Title = node.Title,
                     CreatedAt = node.CreatedAt,
@@ -27,10 +27,10 @@ namespace Backend.Services {
             return nodesList;
         }
 
-        public List<NodeListItemReadDto> GetFavoriteNodes() {
-            List<NodeListItemReadDto> nodesList = new();
+        public List<NoteListItemReadDto> GetFavoriteNodes() {
+            List<NoteListItemReadDto> nodesList = new();
             _nodes.Where(n => n.IsFavorite == true).ToList().ForEach(node => {
-                nodesList.Add(new NodeListItemReadDto {
+                nodesList.Add(new NoteListItemReadDto {
                     Id = node.Id,
                     Title = node.Title,
                     CreatedAt = node.CreatedAt,
@@ -40,12 +40,12 @@ namespace Backend.Services {
             return nodesList;
         }
 
-        public NodeReadDto GetNodeById(int id) {
-            Node? node = _nodes.Where(n => n.Id == id).First();
+        public NoteReadDto GetNodeById(int id) {
+            Note? node = _nodes.Where(n => n.Id == id).First();
             if (node == null) {
                 throw new Exception("Node not found");
             }
-            return new NodeReadDto {
+            return new NoteReadDto {
                 Id = node.Id,
                 Title = node.Title,
                 Content = node.Content,
@@ -53,12 +53,12 @@ namespace Backend.Services {
             };
         }
 
-        public void UpdateNode(NodeWriteDto node, int id) {
+        public void UpdateNode(NoteWriteDto node, int id) {
             if (node == null) {
                 throw new Exception("Node not found");
             }
 
-            Node? existingNode = _nodes.Find(n => n.Id == id);
+            Note? existingNode = _nodes.Find(n => n.Id == id);
             if (existingNode == null) {
                 throw new Exception("Node not found");
             }
@@ -68,21 +68,21 @@ namespace Backend.Services {
         }
 
         public void DeleteNode(int id) {
-            Node? node = _nodes.Find(n => n.Id == id);
+            Note? node = _nodes.Find(n => n.Id == id);
             if (node == null) {
                 throw new Exception("Node not found");
             }
             _nodes.Remove(node);
         }
-        public NodeReadDto CreateNode(NodeWriteDto node) {
-            Node nodenew = new Node {
+        public NoteReadDto CreateNode(NoteWriteDto node) {
+            Note nodenew = new Note {
                 Id = currentNodeId++,
                 Title = node.Title,
                 Content = node.Content,
                 CreatedAt = DateTime.Now
             };
             _nodes.Add(nodenew);
-            return new NodeReadDto {
+            return new NoteReadDto {
                 Id = nodenew.Id,
                 Title = nodenew.Title,
                 Content = nodenew.Content,
@@ -91,7 +91,7 @@ namespace Backend.Services {
         }
 
         public void ChageNodeFavorite(int id, bool isFavorite) {
-            Node? node = _nodes.Find(n => n.Id == id);
+            Note? node = _nodes.Find(n => n.Id == id);
             if (node == null) {
                 throw new Exception("Node not found");
             }

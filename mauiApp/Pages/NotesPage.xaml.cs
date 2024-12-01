@@ -6,8 +6,8 @@ namespace mauiApp.Pages;
 
 public partial class NotePages : ContentPage {
 
-    NodesViewModel _vm;
-    public NotePages(NodesViewModel vm) {
+    NotesViewModel _vm;
+    public NotePages(NotesViewModel vm) {
         _vm = vm;
         BindingContext = _vm;
         InitializeComponent();

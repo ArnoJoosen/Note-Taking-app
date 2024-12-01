@@ -14,13 +14,13 @@
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dto:NodeListItemReadDto">
+                    <DataTemplate x:DataType="dto:NoteListItemReadDto">
                         <Frame>
                             <Label Text="{Binding Title}"
                                    FontSize="24"/>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer
-                                        Tapped="OnNodeTapped"
+                                        Tapped="OnNoteTapped"
                                         CommandParameter="{Binding Id}"/>
                             </Frame.GestureRecognizers>
                         </Frame>

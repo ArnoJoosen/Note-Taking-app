@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Backend.ViewModels {
-    public class NodeViewModel {
+    public class NoteViewModel {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public NodeViewModel(IApiNoteService api, int id) {
+        public NoteViewModel(IApiNoteService api, int id) {
             var node = api.GetNodeById(id);
             Id = node.Id;
             Title = node.Title;

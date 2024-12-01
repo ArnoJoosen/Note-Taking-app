@@ -2,15 +2,15 @@ using Backend.Services;
 using Shared.dto;
 
 namespace Backend.ViewModels {
-    public class NodeEditViewModel {
+    public class NoteEditViewModel {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
 
         IApiNoteService _api;
 
-        public NodeEditViewModel(IApiNoteService api, int id) {
-            NodeReadDto node = api.GetNodeById(id);
+        public NoteEditViewModel(IApiNoteService api, int id) {
+            NoteReadDto node = api.GetNodeById(id);
             Id = node.Id;
             Title = node.Title;
             Content = node.Content;
@@ -18,7 +18,7 @@ namespace Backend.ViewModels {
         }
 
         public void Save() {
-            NodeWriteDto node = new NodeWriteDto {
+            NoteWriteDto node = new NoteWriteDto {
                 Title = Title,
                 Content = Content
             };
