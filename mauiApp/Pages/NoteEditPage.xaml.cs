@@ -22,9 +22,14 @@ public partial class NoteEditPage : ContentPage {
         InitializeComponent();
 	}
 
-	private void LoadNote() {
-        _vm = new(_api, _Id);
+	private async Task LoadNote() {
+        _vm = new(_api);
+        await _vm.LoadNote(_Id);
         BindingContext = _vm;
+        ToolbarItems[0].SetValue(MenuItem.IsEnabledProperty, true);
+        Indicator.IsVisible = false;
+        TitleEdit.IsEnabled = true;
+        ContentEdit.IsEnabled = true;
     }
 
     public void OnSaveClicked(object sender, EventArgs e) {

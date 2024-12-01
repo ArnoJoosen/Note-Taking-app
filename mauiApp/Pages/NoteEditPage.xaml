@@ -7,9 +7,10 @@
              xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
              x:DataType="viemodel:NoteEditViewModel">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="💾" Clicked="OnSaveClicked"/>
+        <ToolbarItem Text="💾" Clicked="OnSaveClicked" IsEnabled="False"/>
     </ContentPage.ToolbarItems>
     <VerticalStackLayout>
+        <ActivityIndicator x:Name="Indicator" IsRunning="True"/>
         <Label
                 Text="Title:"
                 VerticalOptions="Center"
@@ -17,7 +18,9 @@
         <Editor
                 Text="{Binding Title}"
                 Margin="10"
-                VerticalOptions="FillAndExpand"/>
+                VerticalOptions="FillAndExpand"
+                IsEnabled="False"
+                x:Name="TitleEdit"/>
         <Label
                 Text="Content: "
                 VerticalOptions="Center"
@@ -26,6 +29,8 @@
             Text="{Binding Content}"
             VerticalOptions="FillAndExpand"
             Margin="10"
-            AutoSize="TextChanges"/>
+            AutoSize="TextChanges"
+            IsEnabled="False"
+            x:Name="ContentEdit"/>
     </VerticalStackLayout>
 </ContentPage>

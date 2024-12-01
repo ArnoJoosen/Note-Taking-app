@@ -9,12 +9,15 @@ namespace Backend.ViewModels {
 
         IApiNoteService _api;
 
-        public NoteEditViewModel(IApiNoteService api, int id) {
-            NoteReadDto node = api.GetNodeById(id);
+        public NoteEditViewModel(IApiNoteService api) {
+            _api = api;
+        }
+
+        public async Task LoadNote(int id) {
+            var node = await _api.GetNodeByIdAsync(id);
             Id = node.Id;
             Title = node.Title;
             Content = node.Content;
-            _api = api;
         }
 
         public void Save() {
