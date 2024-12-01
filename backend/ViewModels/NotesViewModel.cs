@@ -21,7 +21,6 @@ namespace Backend.ViewModels {
 
         public NotesViewModel(IApiNoteService api) {
             _api = api;
-            UpdateNodeList();
             addCommand = new DelegateCommand(p => AddNode());
             deleteCommand = new DelegateCommand(p => DeleteNode((int)p));
             ChangeNodeFavoriteCommand = new DelegateCommand(p => ChangeNodeFavorite((int)p));
