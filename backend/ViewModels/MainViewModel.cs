@@ -1,11 +1,6 @@
 ﻿using Backend.Services;
 using Shared.dto;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Backend.ViewModels {
@@ -14,10 +9,12 @@ namespace Backend.ViewModels {
         public ObservableCollection<TodoListItemReadDto> NotCompletedTodos { get; set; } = new ObservableCollection<TodoListItemReadDto>();
         public ICommand CompleteTodoCommand { get; private set; }
 
-        IApiService _api;
+        IApiTodoService _apiTodo;
+        IApiNoteService _apiNode;
 
-        public MainViewModel(IApiService api) {
-            _api = api;
+        public MainViewModel(IApiTodoService apiTodo, IApiNoteService apiNode) {
+            _apiTodo = apiTodo;
+            _apiNode = apiNode;
             UpdateNodeFavorites();
             UpdateTodoNotDone();
             CompleteTodoCommand = new DelegateCommand(p => CompleteTodoItem((int)p));
@@ -25,16 +22,16 @@ namespace Backend.ViewModels {
 
         public void UpdateNodeFavorites() {
             FavoritesNods.Clear();
-            _api.GetFavoriteNodes().ForEach(n => FavoritesNods.Add(n));
+            _apiNode.GetFavoriteNodes().ForEach(n => FavoritesNods.Add(n));
         }
 
         public void UpdateTodoNotDone() {
             NotCompletedTodos.Clear();
-            _api.GetNotCompletedTodos().ForEach(t => NotCompletedTodos.Add(t));
+            _apiTodo.GetNotCompletedTodos().ForEach(t => NotCompletedTodos.Add(t));
         }
 
         public void CompleteTodoItem(int id) {
-            _api.UpdateTodoState(id, true);
+            _apiTodo.UpdateTodoState(id, true);
             var todo = NotCompletedTodos.FirstOrDefault(t => t.Id == id);
             if (todo != null) {
                 NotCompletedTodos.Remove(todo);

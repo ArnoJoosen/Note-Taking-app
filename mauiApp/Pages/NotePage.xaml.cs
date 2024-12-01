@@ -8,7 +8,7 @@ namespace mauiApp.Pages;
 public partial class NotePage : ContentPage {
     private int _Id;
     NodeViewModel _vm;
-    IApiService _api;
+    IApiNoteService _api;
     public int NodeId {
         get => _Id;
         set {
@@ -17,7 +17,7 @@ public partial class NotePage : ContentPage {
         }
     }
 
-    public NotePage(IApiService api) {
+    public NotePage(IApiNoteService api) {
         _api = api;
         InitializeComponent();
     }

@@ -17,7 +17,8 @@ public static class MauiProgram {
 
 		builder.Logging.AddDebug();
 
-		builder.Services.AddSingleton<IApiService, MockApiService>();
+		builder.Services.AddSingleton<IApiTodoService, MockApiTodoService>();
+		builder.Services.AddSingleton<IApiNoteService, MockApiNoteService>();
 
         // pages
         // Main

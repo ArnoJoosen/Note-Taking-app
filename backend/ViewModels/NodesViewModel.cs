@@ -13,13 +13,13 @@ namespace Backend.ViewModels {
         public ObservableCollection<NodeListItemReadDto> ObservableNotes { get; set; } = new ObservableCollection<NodeListItemReadDto>();
         public String InputTitle { get; set; } = "";
 
-        IApiService _api;
+        IApiNoteService _api;
 
         public ICommand addCommand { get; private set; }
         public ICommand deleteCommand { get; private set; }
         public ICommand ChangeNodeFavoriteCommand { get; private set; }
 
-        public NodesViewModel(IApiService api) {
+        public NodesViewModel(IApiNoteService api) {
             _api = api;
             UpdateNodeList();
             addCommand = new DelegateCommand(p => AddNode());

@@ -13,13 +13,13 @@ namespace Backend.ViewModels
         public ObservableCollection<TodoListItemReadDto> ObservableTodoItems { get; set; } = new();
         public String InputTitle { get; set; } = "";
 
-        private IApiService _api;
+        private IApiTodoService _api;
 
         public ICommand addCommand { get; private set; }
         public ICommand deleteCommand { get; private set; }
         public ICommand changeDonStateCommand { get; private set; }
 
-        public TodoViewModel(IApiService api) {
+        public TodoViewModel(IApiTodoService api) {
             _api = api;
             addCommand = new DelegateCommand(p => AddTodo());
             deleteCommand = new DelegateCommand(p => DeleteTodo((int)p));
