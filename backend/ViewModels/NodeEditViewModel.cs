@@ -7,9 +7,9 @@ namespace Backend.ViewModels {
         public string Title { get; set; }
         public string Content { get; set; }
 
-        IApiService _api;
+        IApiNoteService _api;
 
-        public NodeEditViewModel(IApiService api, int id) {
+        public NodeEditViewModel(IApiNoteService api, int id) {
             NodeReadDto node = api.GetNodeById(id);
             Id = node.Id;
             Title = node.Title;
@@ -19,11 +19,10 @@ namespace Backend.ViewModels {
 
         public void Save() {
             NodeWriteDto node = new NodeWriteDto {
-                Id = Id,
                 Title = Title,
                 Content = Content
             };
-            _api.UpdateNode(node);
+            _api.UpdateNode(node, Id);
         }
     }
 }

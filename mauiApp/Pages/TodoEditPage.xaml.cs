@@ -8,7 +8,7 @@ public partial class TodoEditPage : ContentPage
 {
     private int _Id;
     TodoEditViewModel _vm;
-    IApiService _api;
+    IApiTodoService _api;
 
     public int TodoId {
         get => _Id;
@@ -23,7 +23,7 @@ public partial class TodoEditPage : ContentPage
         BindingContext = _vm;
     }
 
-    public TodoEditPage(IApiService api) {
+    public TodoEditPage(IApiTodoService api) {
         _api = api;
         InitializeComponent();
     }

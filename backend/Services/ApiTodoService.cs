@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Services
 {
-    internal class ApiService
+    internal class ApiTodoService
     {
     }
 }

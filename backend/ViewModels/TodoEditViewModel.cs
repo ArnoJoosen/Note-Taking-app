@@ -10,7 +10,7 @@ using Shared.Models;
 
 namespace Backend.ViewModels {
     public class TodoEditViewModel : INotifyPropertyChanged {
-        IApiService _api;
+        IApiTodoService _api;
         int ItemId { get; set; }
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
@@ -32,7 +32,7 @@ namespace Backend.ViewModels {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TodoEditViewModel(IApiService api, int id) {
+        public TodoEditViewModel(IApiTodoService api, int id) {
             _api = api;
             ItemId = id;
             TodoReadDto todo = _api.GetTodoById(id);
@@ -44,12 +44,11 @@ namespace Backend.ViewModels {
 
         public void Save() {
             _api.UpdateTodo(new TodoWriteDto {
-                Id = ItemId,
                 Title = Title,
                 Description = Description,
                 HasDetline = HasDetline,
                 Detline = DetLine,
-                IsCompleted = IsCompleted });
+                IsCompleted = IsCompleted }, ItemId);
         }
     }
 }

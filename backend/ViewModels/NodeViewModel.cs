@@ -12,7 +12,7 @@ namespace Backend.ViewModels {
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public NodeViewModel(IApiService api, int id) {
+        public NodeViewModel(IApiNoteService api, int id) {
             var node = api.GetNodeById(id);
             Id = node.Id;
             Title = node.Title;

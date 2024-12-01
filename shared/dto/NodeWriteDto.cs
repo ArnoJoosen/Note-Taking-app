@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Shared.dto {
     public class NodeWriteDto {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; } 
     }

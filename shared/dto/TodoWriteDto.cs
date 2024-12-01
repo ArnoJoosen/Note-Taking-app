@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Shared.dto {
     public class TodoWriteDto {
-        public int Id { get; set; }
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
         public DateTime Detline { get; set; }
