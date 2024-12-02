@@ -18,9 +18,16 @@ public partial class TodoEditPage : ContentPage
         }
     }
 
-    private void LoadTodo() {
-        _vm = new TodoEditViewModel(_api, _Id);
+    private async Task LoadTodo() {
+        _vm = new TodoEditViewModel(_api);
+        await _vm.Load(_Id);
         BindingContext = _vm;
+        TitleEditor.IsEnabled = true;
+        DescriptionEditor.IsEnabled = true;
+        HasDeadlineCheckbox.IsEnabled = true;
+        DeadlinePicker.IsEnabled = true;
+        CompletedCheckbox.IsEnabled = true;
+        SaveButton.IsEnabled = true;
     }
 
     public TodoEditPage(IApiTodoService api) {

@@ -15,8 +15,6 @@ namespace Backend.ViewModels {
         public MainViewModel(IApiTodoService apiTodo, IApiNoteService apiNode) {
             _apiTodo = apiTodo;
             _apiNode = apiNode;
-            UpdateNodeFavorites();
-            UpdateTodoNotDone();
             CompleteTodoCommand = new DelegateCommand(p => CompleteTodoItem((int)p));
         }
 
@@ -28,12 +26,12 @@ namespace Backend.ViewModels {
 
         public async void UpdateTodoNotDone() {
             NotCompletedTodos.Clear();
-            var nodes = _apiTodo.GetNotCompletedTodos();
-             nodes.ForEach(t => NotCompletedTodos.Add(t));
+            var nodes = await _apiTodo.GetNotCompletedTodosAsync();
+            nodes.ForEach(t => NotCompletedTodos.Add(t));
         }
 
         public void CompleteTodoItem(int id) {
-            _apiTodo.UpdateTodoState(id, true);
+            _apiTodo.UpdateTodoStateAsync(id, true);
             var todo = NotCompletedTodos.FirstOrDefault(t => t.Id == id);
             if (todo != null) {
                 NotCompletedTodos.Remove(todo);

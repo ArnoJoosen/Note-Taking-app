@@ -32,10 +32,13 @@ namespace Backend.ViewModels {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TodoEditViewModel(IApiTodoService api, int id) {
+        public TodoEditViewModel(IApiTodoService api) {
             _api = api;
+        }
+
+        public async Task Load(int id) {
             ItemId = id;
-            TodoReadDto todo = _api.GetTodoById(id);
+            TodoReadDto todo = await _api.GetTodoByIdAsync(id);
             Title = todo.Title;
             Description = todo.Description;
             HasDetline = todo.HasDetline;
@@ -43,7 +46,7 @@ namespace Backend.ViewModels {
         }
 
         public void Save() {
-            _api.UpdateTodo(new TodoWriteDto {
+            _api.UpdateTodoAsync(new TodoWriteDto {
                 Title = Title,
                 Description = Description,
                 HasDetline = HasDetline,

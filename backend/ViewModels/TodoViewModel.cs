@@ -26,15 +26,15 @@ namespace Backend.ViewModels
             changeDonStateCommand = new DelegateCommand(p => ChangeDoneState((int)p));
         }
 
-        public void UpdateTodoList() {
-            List<TodoListItemReadDto> todos = _api.GetTodos();
+        public async void UpdateTodoList() {
+            List<TodoListItemReadDto> todos = await _api.GetTodosAsync();
             ObservableTodoItems.Clear();
             foreach (var todo in todos) {
                 ObservableTodoItems.Add(todo);
             }
         }
 
-        public void AddTodo() {
+        public async void AddTodo() {
             if (InputTitle == "") {
                 return;
             }
@@ -45,11 +45,11 @@ namespace Backend.ViewModels
                 HasDetline = false,
                 IsCompleted = false
             };
-            ObservableTodoItems.Add(_api.CreateTodo(todo));
+            ObservableTodoItems.Add(await _api.CreateTodoAsync(todo));
         }
 
         public void DeleteTodo(int id) {
-            _api.DeleteTodo(id);
+            _api.DeleteTodoAsync(id);
             var todoToRemove = ObservableTodoItems.FirstOrDefault(t => t.Id == id);
             if (todoToRemove != null) {
                 ObservableTodoItems.Remove(todoToRemove);
@@ -58,7 +58,7 @@ namespace Backend.ViewModels
 
         public void ChangeDoneState(int id) {
             bool done = ObservableTodoItems.First(t => t.Id == id).IsCompleted;
-            _api.UpdateTodoState(id, !done);
+            _api.UpdateTodoStateAsync(id, !done);
             UpdateTodoList();
         }
     }

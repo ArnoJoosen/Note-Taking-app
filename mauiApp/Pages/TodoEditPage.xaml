@@ -10,32 +10,39 @@
         <Editor x:Name="TitleEditor"
                 Placeholder="Title"
                 HeightRequest="50"
-                Text="{Binding Title}" />
+                Text="{Binding Title}"
+                IsEnabled="False"/>
 
         <Editor x:Name="DescriptionEditor"
                 Placeholder="Description"
                 HeightRequest="100"
-                Text="{Binding Description}" />
+                Text="{Binding Description}"
+                IsEnabled="False"/>
 
         <HorizontalStackLayout>
             <CheckBox x:Name="HasDeadlineCheckbox"
-                    IsChecked="{Binding HasDetline}" />
+                    IsChecked="{Binding HasDetline}"
+                    IsEnabled="False"/>
             <Label Text="Has Deadline"
                 VerticalOptions="Center" />
             <DatePicker x:Name="DeadlinePicker"
-                        IsEnabled="{Binding HasDetline}"
-                        Date="{Binding DetLine}" />
+                        IsVisible="{Binding HasDetline}"
+                        Date="{Binding DetLine}"
+                        IsEnabled="False"/>
         </HorizontalStackLayout>
 
         <HorizontalStackLayout>
             <CheckBox x:Name="CompletedCheckbox"
-                    IsChecked="{Binding IsCompleted}" />
+                    IsChecked="{Binding IsCompleted}"
+                    IsEnabled="False"/>
             <Label Text="Completed"
                 VerticalOptions="Center" />
         </HorizontalStackLayout>
 
-        <Button Text="Save"
+        <Button x:Name="SaveButton"
+                Text="Save"
                 Margin="0,20,0,0"
-                Clicked="OnClickSave"/>
+                Clicked="OnClickSave"
+                IsEnabled="False"/>
     </VerticalStackLayout>
 </ContentPage>

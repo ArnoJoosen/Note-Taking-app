@@ -9,18 +9,25 @@ namespace Backend.Services {
             _httpClient = httpClient;
         }
 
-        public List<TodoListItemReadDto> GetTodos() {
-            var response = _httpClient.GetAsync("http://localhost:5110/api/todo").Result;
+        public async Task<List<TodoListItemReadDto>> GetTodosAsync() {
+            var response = await _httpClient.GetAsync("http://localhost:5110/api/todo");
             response.EnsureSuccessStatusCode();
-            var todos = response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>().Result;
+            var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
             return todos;
         }
 
-        public List<TodoListItemReadDto> GetNotCompletedTodos() {
-            var response = _httpClient.GetAsync("http://localhost:5110/api/todo/not-completed").Result;
+        public async Task<List<TodoListItemReadDto>> GetNotCompletedTodosAsync() {
+            var response = await _httpClient.GetAsync("http://localhost:5110/api/todo/not-completed");
             response.EnsureSuccessStatusCode();
-            var todos = response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>().Result;
+            var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
             return todos;
+        }
+
+        public async Task<TodoReadDto> GetTodoByIdAsync(int id) {
+            var response = await _httpClient.GetAsync($"http://localhost:5110/api/todo/{id}");
+            response.EnsureSuccessStatusCode();
+            var todo = await response.Content.ReadFromJsonAsync<TodoReadDto>();
+            return todo;
         }
 
         public TodoReadDto GetTodoById(int id) {
@@ -30,28 +37,29 @@ namespace Backend.Services {
             return todo;
         }
 
-        public TodoListItemReadDto CreateTodo(TodoWriteDto todo) {
-            var response = _httpClient.PostAsJsonAsync("http://localhost:5110/api/todo", todo).Result;
+
+        public async Task<TodoListItemReadDto> CreateTodoAsync(TodoWriteDto todo) {
+            var response = await _httpClient.PostAsJsonAsync("http://localhost:5110/api/todo", todo);
             response.EnsureSuccessStatusCode();
-            var createdTodo = response.Content.ReadFromJsonAsync<TodoListItemReadDto>().Result;
+            var createdTodo = await response.Content.ReadFromJsonAsync<TodoListItemReadDto>();
             return createdTodo;
         }
 
-        public TodoReadDto UpdateTodo(TodoWriteDto todo, int id) {
-            var response = _httpClient.PutAsJsonAsync($"http://localhost:5110/api/todo/{id}", todo).Result;
+        public async Task<TodoReadDto> UpdateTodoAsync(TodoWriteDto todo, int id) {
+            var response = await _httpClient.PutAsJsonAsync($"http://localhost:5110/api/todo/{id}", todo);
             response.EnsureSuccessStatusCode();
-            var updatedTodo = response.Content.ReadFromJsonAsync<TodoReadDto>().Result;
+            var updatedTodo = await response.Content.ReadFromJsonAsync<TodoReadDto>();
             return updatedTodo;
         }
 
-        public void UpdateTodoState(int id, bool isCompleted) {
+        public async Task UpdateTodoStateAsync(int id, bool isCompleted) {
             var content = JsonContent.Create(new {});
-            var response = _httpClient.PutAsync($"http://localhost:5110/api/todo/{id}/state?isCompleted={isCompleted}", content).Result;
+            var response = await _httpClient.PutAsync($"http://localhost:5110/api/todo/{id}/state?isCompleted={isCompleted}", content);
             response.EnsureSuccessStatusCode();
         }
 
-        public void DeleteTodo(int id) {
-            var response = _httpClient.DeleteAsync($"http://localhost:5110/api/todo/{id}").Result;
+        public async Task DeleteTodoAsync(int id) {
+            var response = await _httpClient.DeleteAsync($"http://localhost:5110/api/todo/{id}");
             response.EnsureSuccessStatusCode();
         }
     }

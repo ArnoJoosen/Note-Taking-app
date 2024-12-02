@@ -1,6 +1,5 @@
 ﻿namespace mauiApp.Pages;
 
-using Backend.Services;
 using Backend.ViewModels;
 
 public partial class MainPage : ContentPage {
