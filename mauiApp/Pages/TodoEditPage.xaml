@@ -7,6 +7,7 @@
              xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
              x:DataType="viemodel:TodoEditViewModel">
     <VerticalStackLayout>
+        <ActivityIndicator x:Name="Indicator" IsRunning="True"/>
         <Editor x:Name="TitleEditor"
                 Placeholder="Title"
                 HeightRequest="50"

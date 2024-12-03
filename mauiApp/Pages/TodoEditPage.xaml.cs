@@ -1,5 +1,4 @@
 namespace mauiApp.Pages;
-using Shared.Models;
 using Backend.ViewModels;
 using Backend.Services;
 
@@ -22,6 +21,7 @@ public partial class TodoEditPage : ContentPage
         _vm = new TodoEditViewModel(_api);
         await _vm.Load(_Id);
         BindingContext = _vm;
+        Indicator.IsVisible = false;
         TitleEditor.IsEnabled = true;
         DescriptionEditor.IsEnabled = true;
         HasDeadlineCheckbox.IsEnabled = true;
