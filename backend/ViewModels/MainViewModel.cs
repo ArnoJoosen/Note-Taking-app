@@ -5,7 +5,6 @@ using System.Windows.Input;
 
 namespace Backend.ViewModels {
     public class MainViewModel {
-        public event NotFountHandler NotFound;
         public event ConnectionErrorHandler ConnectionError;
         public ObservableCollection<NoteListItemReadDto> FavoritesNods { get; set; } = new ObservableCollection<NoteListItemReadDto>();
         public ObservableCollection<TodoListItemReadDto> NotCompletedTodos { get; set; } = new ObservableCollection<TodoListItemReadDto>();

@@ -11,7 +11,6 @@ namespace Backend.Services {
     public class NotFoundException : Exception {
         public NotFoundException(int id)
             : base($"Resource with ID {id} was not found.") {
-            Id = id;
         }
     }
 

@@ -10,6 +10,7 @@ public partial class MainPage : ContentPage {
         InitializeComponent();
         _vm = vm;
         BindingContext = vm;
+        _vm.ConnectionError += OnConnectionError;
     }
 
     protected override void OnAppearing() {
@@ -21,5 +22,8 @@ public partial class MainPage : ContentPage {
         if (e.Parameter is int tappedItem) {
             await Shell.Current.GoToAsync($"NotePage?id={tappedItem}");
         }
+    }
+    public void OnConnectionError() {
+        DisplayAlert("Error", "Connection error", "Ok");
     }
 }

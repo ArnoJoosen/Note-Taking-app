@@ -10,82 +10,95 @@ namespace Backend.Services {
         }
 
         public async Task<List<TodoListItemReadDto>> GetTodosAsync() {
-            var response = await _httpClient.GetAsync("http://localhost:5110/api/todo");
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable) {
-                throw new Exception("Connection error - service unavailable");
+            try {
+                var response = await _httpClient.GetAsync("http://localhost:5110/api/todo");
+                var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
+                return todos;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
             }
-            var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
-            return todos;
         }
 
         public async Task<List<TodoListItemReadDto>> GetNotCompletedTodosAsync() {
-            var response = await _httpClient.GetAsync("http://localhost:5110/api/todo/not-completed");
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable) {
-                throw new Exception("Connection error - service unavailable");
+            try {
+                var response = await _httpClient.GetAsync("http://localhost:5110/api/todo/not-completed");
+                var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
+                return todos;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
             }
-            var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
-            return todos;
         }
 
         public async Task<TodoReadDto> GetTodoByIdAsync(int id) {
-            var response = await _httpClient.GetAsync($"http://localhost:5110/api/todo/{id}");
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable) {
-                throw new Exception("Connection error - service unavailable");
-            } else if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
-                throw new Exception("Note not found");
+            try {
+                var response = await _httpClient.GetAsync($"http://localhost:5110/api/todo/{id}");
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+                var todo = await response.Content.ReadFromJsonAsync<TodoReadDto>();
+                return todo;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
             }
-            var todo = await response.Content.ReadFromJsonAsync<TodoReadDto>();
-            return todo;
         }
 
         public TodoReadDto GetTodoById(int id) {
-            var response = _httpClient.GetAsync($"http://localhost:5110/api/todo/{id}").Result;
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable) {
-                throw new Exception("Connection error - service unavailable");
-            } else if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
-                throw new Exception("Note not found");
+            try {
+                var response = _httpClient.GetAsync($"http://localhost:5110/api/todo/{id}").Result;
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+                var todo = response.Content.ReadFromJsonAsync<TodoReadDto>().Result;
+                return todo;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
             }
-            var todo = response.Content.ReadFromJsonAsync<TodoReadDto>().Result;
-            return todo;
         }
 
 
         public async Task<TodoListItemReadDto> CreateTodoAsync(TodoWriteDto todo) {
-            var response = await _httpClient.PostAsJsonAsync("http://localhost:5110/api/todo", todo);
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable) {
-                throw new Exception("Connection error - service unavailable");
+            try {
+                var response = await _httpClient.PostAsJsonAsync("http://localhost:5110/api/todo", todo);
+                var createdTodo = await response.Content.ReadFromJsonAsync<TodoListItemReadDto>();
+                return createdTodo;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
             }
-            var createdTodo = await response.Content.ReadFromJsonAsync<TodoListItemReadDto>();
-            return createdTodo;
         }
 
         public async Task<TodoReadDto> UpdateTodoAsync(TodoWriteDto todo, int id) {
-            var response = await _httpClient.PutAsJsonAsync($"http://localhost:5110/api/todo/{id}", todo);
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable) {
-                throw new Exception("Connection error - service unavailable");
-            } else if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
-                throw new Exception("Note not found");
+            try {
+                var response = await _httpClient.PutAsJsonAsync($"http://localhost:5110/api/todo/{id}", todo);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+                var updatedTodo = await response.Content.ReadFromJsonAsync<TodoReadDto>();
+                return updatedTodo;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
             }
-            var updatedTodo = await response.Content.ReadFromJsonAsync<TodoReadDto>();
-            return updatedTodo;
         }
 
         public async Task UpdateTodoStateAsync(int id, bool isCompleted) {
-            var content = JsonContent.Create(new {});
-            var response = await _httpClient.PutAsync($"http://localhost:5110/api/todo/{id}/state?isCompleted={isCompleted}", content);
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable) {
-                throw new Exception("Connection error - service unavailable");
-            } else if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
-                throw new Exception("Note not found");
+            try {
+                var content = JsonContent.Create(new {});
+                var response = await _httpClient.PutAsync($"http://localhost:5110/api/todo/{id}/state?isCompleted={isCompleted}", content);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
             }
         }
 
         public async Task DeleteTodoAsync(int id) {
-            var response = await _httpClient.DeleteAsync($"http://localhost:5110/api/todo/{id}");
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable) {
-                throw new Exception("Connection error - service unavailable");
-            } else if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
-                throw new Exception("Note not found");
+            try {
+                var response = await _httpClient.DeleteAsync($"http://localhost:5110/api/todo/{id}");
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
             }
         }
     }

@@ -19,11 +19,13 @@ public partial class NoteEditPage : ContentPage {
 
 	public NoteEditPage(IApiNoteService api) {
         _api = api;
+        _vm = new(_api);
+        _vm.NotFound += OnNotFound;
+        _vm.ConnectionError += OnConnectionError;
         InitializeComponent();
 	}
 
 	private async Task LoadNote() {
-        _vm = new(_api);
         await _vm.LoadNote(_Id);
         BindingContext = _vm;
         ToolbarItems[0].SetValue(MenuItem.IsEnabledProperty, true);
@@ -35,5 +37,12 @@ public partial class NoteEditPage : ContentPage {
     public void OnSaveClicked(object sender, EventArgs e) {
         _vm.Save();
         Navigation.PopAsync();
+    }
+
+    public void OnConnectionError() {
+        Navigation.PopToRootAsync(); // go back to the main page if there is a connection error
+    }
+    public void OnNotFound(int id) {
+        Navigation.PopAsync(); // go back to the previous page if the note is not found
     }
 }
