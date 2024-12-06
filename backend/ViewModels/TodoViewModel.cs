@@ -7,9 +7,10 @@ using System.Windows.Input;
 using Backend;
 using Shared.dto;
 
-namespace Backend.ViewModels
-{
+namespace Backend.ViewModels {
     public class TodoViewModel {
+        public event NotFountHandler NotFound;
+        public event ConnectionErrorHandler ConnectionError;
         public ObservableCollection<TodoListItemReadDto> ObservableTodoItems { get; set; } = new();
         public String InputTitle { get; set; } = "";
 
@@ -27,10 +28,15 @@ namespace Backend.ViewModels
         }
 
         public async void UpdateTodoList() {
-            List<TodoListItemReadDto> todos = await _api.GetTodosAsync();
-            ObservableTodoItems.Clear();
-            foreach (var todo in todos) {
-                ObservableTodoItems.Add(todo);
+            try {
+                List<TodoListItemReadDto> todos = await _api.GetTodosAsync();
+                ObservableTodoItems.Clear();
+                foreach (var todo in todos) {
+                    ObservableTodoItems.Add(todo);
+                }
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+                return;
             }
         }
 
@@ -45,21 +51,39 @@ namespace Backend.ViewModels
                 HasDetline = false,
                 IsCompleted = false
             };
-            ObservableTodoItems.Add(await _api.CreateTodoAsync(todo));
+            try {
+                ObservableTodoItems.Add(await _api.CreateTodoAsync(todo));
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+                return;
+            }
         }
 
         public void DeleteTodo(int id) {
-            _api.DeleteTodoAsync(id);
-            var todoToRemove = ObservableTodoItems.FirstOrDefault(t => t.Id == id);
-            if (todoToRemove != null) {
-                ObservableTodoItems.Remove(todoToRemove);
+            try {
+                _api.DeleteTodoAsync(id);
+                var todoToRemove = ObservableTodoItems.FirstOrDefault(t => t.Id == id);
+                if (todoToRemove != null) {
+                    ObservableTodoItems.Remove(todoToRemove);
+                }
+            } catch (NotFoundException) {
+                NotFound?.Invoke(id);
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
             }
+            
         }
 
         public void ChangeDoneState(int id) {
             bool done = ObservableTodoItems.First(t => t.Id == id).IsCompleted;
-            _api.UpdateTodoStateAsync(id, !done);
-            UpdateTodoList();
+            try {
+                _api.UpdateTodoStateAsync(id, !done);
+                UpdateTodoList();
+            } catch (NotFoundException) {
+                NotFound?.Invoke(id);
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+            }
         }
     }
 }

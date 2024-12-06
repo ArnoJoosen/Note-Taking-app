@@ -3,6 +3,8 @@ using Shared.dto;
 
 namespace Backend.ViewModels {
     public class NoteEditViewModel {
+        public event NotFountHandler NotFound;
+        public event ConnectionErrorHandler ConnectionError;
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
@@ -14,10 +16,15 @@ namespace Backend.ViewModels {
         }
 
         public async Task LoadNote(int id) {
-            var node = await _api.GetNodeByIdAsync(id);
-            Id = node.Id;
-            Title = node.Title;
-            Content = node.Content;
+            try {
+                var node = await _api.GetNodeByIdAsync(id);
+                Id = node.Id;
+                Title = node.Title;
+                Content = node.Content;
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+                return;
+            }
         }
 
         public void Save() {
@@ -25,7 +32,15 @@ namespace Backend.ViewModels {
                 Title = Title,
                 Content = Content
             };
-            _api.UpdateNodeAsync(node, Id);
+            try {
+                _api.UpdateNodeAsync(node, Id);
+            } catch (NotFoundException) {
+                NotFound?.Invoke(Id);
+                return;
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+                return;
+            }
         }
     }
 }

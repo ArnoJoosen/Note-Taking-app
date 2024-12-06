@@ -9,6 +9,6 @@ namespace Backend.Services {
         public Task<TodoListItemReadDto> CreateTodoAsync(TodoWriteDto todo);
         public Task<TodoReadDto> UpdateTodoAsync(TodoWriteDto todo, int id);
         public Task UpdateTodoStateAsync(int id, bool isCompleted);
-        public Task DeleteTodoAsync(int id);       
+        public Task DeleteTodoAsync(int id);
     }
 }

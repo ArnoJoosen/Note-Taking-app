@@ -1,13 +1,10 @@
 ﻿using Backend.Services;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Backend.ViewModels {
 public class NoteViewModel : INotifyPropertyChanged {
+    public event NotFountHandler NotFound;
+    public event ConnectionErrorHandler ConnectionError;
     public event PropertyChangedEventHandler PropertyChanged;
 
     public int Id { get; set; }
@@ -39,11 +36,19 @@ public class NoteViewModel : INotifyPropertyChanged {
     }
 
     public async Task LoadNote(int id) {
-        var node = await _api.GetNodeByIdAsync(id);
-        Id = node.Id;
-        Title = node.Title;
-        Content = node.Content;
-        CreatedAt = node.CreatedAt;
+        try {
+            var node = await _api.GetNodeByIdAsync(id);
+            Id = node.Id;
+            Title = node.Title;
+            Content = node.Content;
+            CreatedAt = node.CreatedAt;
+        } catch (NotFoundException) {
+            NotFound?.Invoke(id);
+            return;
+        } catch (ConnectionErrorException) {
+            ConnectionError?.Invoke();
+            return;
+        }    
     }
 }
 }

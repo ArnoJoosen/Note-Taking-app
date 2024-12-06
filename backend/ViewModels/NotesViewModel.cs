@@ -10,6 +10,8 @@ using System.Windows.Input;
 
 namespace Backend.ViewModels {
     public class NotesViewModel {
+        public event NotFountHandler NotFound;
+        public event ConnectionErrorHandler ConnectionError;
         public ObservableCollection<NoteListItemReadDto> ObservableNotes { get; set; } = new ObservableCollection<NoteListItemReadDto>();
         public String InputTitle { get; set; } = "";
 
@@ -28,29 +30,55 @@ namespace Backend.ViewModels {
 
         public async void UpdateNodeList() {
             ObservableNotes.Clear();
-            foreach (var node in await _api.GetNodesAsync()) {
-                ObservableNotes.Add(node);
+            try {
+                foreach (var node in await _api.GetNodesAsync()) {
+                    ObservableNotes.Add(node);
+                }
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+                return;
             }
         }
 
         public void AddNode() {
             NoteWriteDto node = new NoteWriteDto { Title = InputTitle, Content = "" };
-            _api.CreateNodeAsync(node);
-            UpdateNodeList();
+            try {
+                _api.CreateNodeAsync(node);
+                UpdateNodeList();
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+                return;
+            }
         }
 
         public void DeleteNode(int id) {
-            _api.DeleteNodeAsync(id);
-            var nodeToRemove = ObservableNotes.FirstOrDefault(n => n.Id == id);
-            if (nodeToRemove != null) {
-                ObservableNotes.Remove(nodeToRemove);
+            try {
+                _api.DeleteNodeAsync(id);
+                var nodeToRemove = ObservableNotes.FirstOrDefault(n => n.Id == id);
+                if (nodeToRemove != null) {
+                    ObservableNotes.Remove(nodeToRemove);
+                }
+            } catch (NotFoundException) {
+                NotFound?.Invoke(id);
+                return;
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+                return;
             }
         }
 
         public void ChangeNodeFavorite(int id) {
             bool faborite = ObservableNotes.FirstOrDefault(n => n.Id == id).IsFavorite;
-            _api.ChageNodeFavoriteAsync(id, !faborite);
-            UpdateNodeList();
+            try {
+                _api.ChageNodeFavoriteAsync(id, !faborite);
+                UpdateNodeList();
+            } catch (NotFoundException) {
+                NotFound?.Invoke(id);
+                return;
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+                return;
+            }
         }
     }
 }
