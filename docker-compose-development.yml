@@ -2,7 +2,7 @@ services:
   db:
     image: mysql
     #volumes:
-    #- ./docker/mysql/data:/var/lib/mysql
+    #- ./mysql/data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: appdatabase

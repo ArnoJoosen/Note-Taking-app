@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mysql
+    container_name: db
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: appdatabase
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    networks:
+      - nodeapp
+    ports:
+      - 3306:3306
+
+  migration-service:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.migration
+    container_name: migration-service
+    depends_on:
+      - db
+    networks:
+      - nodeapp
+
+  api-service:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.api
+    container_name: api-service
+    depends_on:
+      - db
+      - migration-service
+    networks:
+      - nodeapp
+
+networks:
+  nodeapp:
