@@ -15,6 +15,8 @@ ENV PATH="${PATH}:/root/.dotnet/tools"
 
 # Create an entrypoint script
 RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo 'while ! mysqladmin ping -h"api-db" --silent; do sleep 1; done' >> /entrypoint.sh && \
+    echo 'echo "Server ready for migration"' >> /entrypoint.sh && \
     echo 'dotnet ef migrations add InitialMigration --project server/server.csproj' >> /entrypoint.sh && \
     echo 'dotnet ef database update --project server/server.csproj' >> /entrypoint.sh && \
     echo 'exec "$@"' >> /entrypoint.sh && \
