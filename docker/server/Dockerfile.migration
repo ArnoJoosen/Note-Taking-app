@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /app
+RUN apt-get update && apt-get install -y default-mysql-client
+# Copy solution files
+COPY ["server/server.csproj", "server/"]
+COPY ["Shared/Shared.csproj", "Shared/"]
+# Restore dependencies
+RUN dotnet restore "server/server.csproj"
+# Copy the rest of the files
+COPY server/. server/
+COPY Shared/. Shared/
+#install dotnet-ef
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
+# Create an entrypoint script
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo 'dotnet ef migrations add InitialMigration --project server/server.csproj' >> /entrypoint.sh && \
+    echo 'dotnet ef database update --project server/server.csproj' >> /entrypoint.sh && \
+    echo 'exec "$@"' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
