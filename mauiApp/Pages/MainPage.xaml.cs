@@ -23,7 +23,13 @@ public partial class MainPage : ContentPage {
             await Shell.Current.GoToAsync($"NotePage?id={tappedItem}");
         }
     }
-    public void OnConnectionError() {
-        DisplayAlert("Error", "Connection error", "Ok");
+    public async void OnConnectionError() {
+        var result = await DisplayAlert("Error", "Connection error", "Try Again", "Close");
+        if (result) { // Try Again
+            _vm.UpdateNodeFavorites();
+            _vm.UpdateTodoNotDone();
+        } else { // Close
+            System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
+        }
     }
 }
