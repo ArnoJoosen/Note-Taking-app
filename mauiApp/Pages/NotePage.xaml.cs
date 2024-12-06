@@ -6,7 +6,7 @@ namespace mauiApp.Pages;
 
 [QueryProperty(nameof(NodeId), "id")]
 public partial class NotePage : ContentPage {
-    private int _Id;
+    private int _Id = -1;
     NoteViewModel _vm;
     IApiNoteService _api;
     public int NodeId {
@@ -34,6 +34,10 @@ public partial class NotePage : ContentPage {
 
     public async void OnEditClicked(object sender, EventArgs e) {
         await Shell.Current.GoToAsync($"NoteEditPage?id={_Id}");
+    }
+
+    protected async override void OnAppearing() {
+        if (_Id != -1) await _vm.LoadNote(_Id);
     }
 
     public void OnConnectionError() {
