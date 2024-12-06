@@ -1,4 +1,3 @@
-version: "3"
 services:
   db:
     image: mysql
@@ -10,7 +9,7 @@ services:
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
     networks:
-      - web
+      - nodeapp
     ports:
       - 3306:3306
 
@@ -24,6 +23,6 @@ services:
       PMA_HOST: db
       PMA_PORT: 3306
     networks:
-      - web
+      - nodeapp
 networks:
   nodeapp:
