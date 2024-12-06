@@ -2,12 +2,13 @@
 
 namespace Backend.Services {
     public interface IApiNoteService {
-        public List<NoteListItemReadDto> GetNodes();
-        public List<NoteListItemReadDto> GetFavoriteNodes();
+        public Task<List<NoteListItemReadDto>> GetNodesAsync();
+        public Task<List<NoteListItemReadDto>> GetFavoriteNodesAsync();
+        public Task<NoteReadDto> GetNodeByIdAsync(int id);
         public NoteReadDto GetNodeById(int id);
-        public NoteReadDto CreateNode(NoteWriteDto node);
-        public void UpdateNode(NoteWriteDto node, int id);
-        public void DeleteNode(int id);
-        public void ChageNodeFavorite(int id, bool isFavorite);
+        public Task<NoteReadDto> CreateNodeAsync(NoteWriteDto node);
+        public Task UpdateNodeAsync(NoteWriteDto node, int id);
+        public Task DeleteNodeAsync(int id);
+        public Task ChageNodeFavoriteAsync(int id, bool isFavorite);
     }
 }

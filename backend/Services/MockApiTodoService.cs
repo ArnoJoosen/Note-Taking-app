@@ -13,7 +13,7 @@ namespace Backend.Services {
             _todos.Add(new Todo { Id = currentTodoId++, Title = "Third todo", Description = "This is the third todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = false });
         }
 
-        public List<TodoListItemReadDto> GetTodos() {
+        public Task<List<TodoListItemReadDto>> GetTodosAsync() {
             // create niew istance of todosList so that the frontend update the ui
             // and simulate the api call
             List<TodoListItemReadDto> todosList = new();
@@ -26,12 +26,14 @@ namespace Backend.Services {
                     IsCompleted = todo.IsCompleted
                 });
             }
-            return todosList;
+            return Task.FromResult(todosList);
         }
 
-        public List<TodoListItemReadDto> GetNotCompletedTodos() {
+        public Task<List<TodoListItemReadDto>> GetNotCompletedTodosAsync() {
             List<TodoListItemReadDto> todosList = new();
             _todos.Where(t => t.IsCompleted == false).ToList().ForEach(todo => {
+                // create niew istance of todosList so that the frontend update the ui
+                // and simulate the api call
                 todosList.Add(new TodoListItemReadDto {
                     Id = todo.Id,
                     Title = todo.Title,
@@ -40,7 +42,24 @@ namespace Backend.Services {
                     IsCompleted = todo.IsCompleted
                 });
             });
-            return todosList;
+            return Task.FromResult(todosList);
+        }
+
+        public Task<TodoReadDto> GetTodoByIdAsync(int id) {
+            Todo? todo = _todos.Where(t => t.Id == id).First();
+            if (todo == null) {
+                throw new Exception("Todo not found");
+            }
+            // create niew istance of todosList so that the frontend update the ui
+            // and simulate the api call
+            return Task.FromResult(new TodoReadDto {
+                Id = todo.Id,
+                Title = todo.Title,
+                Description = todo.Description,
+                Detline = todo.Detline,
+                HasDetline = todo.HasDetline,
+                IsCompleted = todo.IsCompleted
+            });
         }
 
         public TodoReadDto GetTodoById(int id) {
@@ -60,7 +79,7 @@ namespace Backend.Services {
             };
         }
 
-        public TodoReadDto UpdateTodo(TodoWriteDto todo, int id) {
+        public Task<TodoReadDto> UpdateTodoAsync(TodoWriteDto todo, int id) {
             if (todo == null) {
                 throw new Exception("Todo not found");
             }
@@ -78,33 +97,35 @@ namespace Backend.Services {
 
             // create niew istance of todosList so that the frontend update the ui
             // and simulate the api call
-            return new TodoReadDto {
+            return Task.FromResult(new TodoReadDto {
                 Id = existingTodo.Id,
                 Title = existingTodo.Title,
                 Description = existingTodo.Description,
                 Detline = existingTodo.Detline,
                 HasDetline = existingTodo.HasDetline,
                 IsCompleted = existingTodo.IsCompleted
-            };
+            });
         }
 
-        public void UpdateTodoState(int id, bool isCompleted) {
+        public Task UpdateTodoStateAsync(int id, bool isCompleted) {
             Todo? todo = _todos.Find(t => t.Id == id);
             if (todo == null) {
                 throw new Exception("Todo not found");
             }
             todo.IsCompleted = isCompleted;
+            return Task.CompletedTask;
         }
 
-        public void DeleteTodo(int id) {
+        public Task DeleteTodoAsync(int id) {
             Todo? todo = _todos.Find(t => t.Id == id);
             if (todo == null) {
-                return;
+                return Task.CompletedTask;
             }
             _todos.Remove(todo);
+            return Task.CompletedTask;
         }
 
-        public TodoListItemReadDto CreateTodo(TodoWriteDto todo) {
+        public Task<TodoListItemReadDto> CreateTodoAsync(TodoWriteDto todo) {
             Todo todonew = new Todo {
                 Id = currentTodoId++,
                 Title = todo.Title,
@@ -116,13 +137,13 @@ namespace Backend.Services {
             _todos.Add(todonew);
             // create niew istance of todosList so that the frontend update the ui
             // and simulate the api call
-            return new TodoListItemReadDto {
+            return Task.FromResult(new TodoListItemReadDto {
                 Id = todonew.Id,
                 Title = todonew.Title,
                 Detline = todonew.Detline,
                 HasDetline = todonew.HasDetline,
                 IsCompleted = todonew.IsCompleted
-            };
+            });
         }
     }
 }

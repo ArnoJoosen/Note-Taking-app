@@ -14,7 +14,7 @@ namespace Backend.Services {
 
 
         // -------------------- Node API --------------------
-        public List<NoteListItemReadDto> GetNodes() {
+        public Task<List<NoteListItemReadDto>> GetNodesAsync() {
             List<NoteListItemReadDto> nodesList = new();
             foreach (var node in _nodes) {
                 nodesList.Add(new NoteListItemReadDto {
@@ -24,10 +24,10 @@ namespace Backend.Services {
                     IsFavorite = node.IsFavorite
                 });
             }
-            return nodesList;
+            return Task.FromResult(nodesList);
         }
 
-        public List<NoteListItemReadDto> GetFavoriteNodes() {
+        public Task<List<NoteListItemReadDto>> GetFavoriteNodesAsync() {
             List<NoteListItemReadDto> nodesList = new();
             _nodes.Where(n => n.IsFavorite == true).ToList().ForEach(node => {
                 nodesList.Add(new NoteListItemReadDto {
@@ -37,7 +37,20 @@ namespace Backend.Services {
                     IsFavorite = node.IsFavorite
                 });
             });
-            return nodesList;
+            return Task.FromResult(nodesList);
+        }
+
+        public Task<NoteReadDto> GetNodeByIdAsync(int id) {
+            Note? node = _nodes.Where(n => n.Id == id).First();
+            if (node == null) {
+                throw new Exception("Node not found");
+            }
+            return Task.FromResult(new NoteReadDto {
+                Id = node.Id,
+                Title = node.Title,
+                Content = node.Content,
+                CreatedAt = node.CreatedAt
+            });
         }
 
         public NoteReadDto GetNodeById(int id) {
@@ -53,7 +66,7 @@ namespace Backend.Services {
             };
         }
 
-        public void UpdateNode(NoteWriteDto node, int id) {
+        public Task UpdateNodeAsync(NoteWriteDto node, int id) {
             if (node == null) {
                 throw new Exception("Node not found");
             }
@@ -65,16 +78,18 @@ namespace Backend.Services {
 
             existingNode.Title = node.Title;
             existingNode.Content = node.Content;
+            return Task.CompletedTask;
         }
 
-        public void DeleteNode(int id) {
+        public Task DeleteNodeAsync(int id) {
             Note? node = _nodes.Find(n => n.Id == id);
             if (node == null) {
                 throw new Exception("Node not found");
             }
             _nodes.Remove(node);
+            return Task.CompletedTask;
         }
-        public NoteReadDto CreateNode(NoteWriteDto node) {
+        public Task<NoteReadDto> CreateNodeAsync(NoteWriteDto node) {
             Note nodenew = new Note {
                 Id = currentNodeId++,
                 Title = node.Title,
@@ -82,20 +97,21 @@ namespace Backend.Services {
                 CreatedAt = DateTime.Now
             };
             _nodes.Add(nodenew);
-            return new NoteReadDto {
+            return Task.FromResult(new NoteReadDto {
                 Id = nodenew.Id,
                 Title = nodenew.Title,
                 Content = nodenew.Content,
                 CreatedAt = nodenew.CreatedAt
-            };
+            });
         }
 
-        public void ChageNodeFavorite(int id, bool isFavorite) {
+        public Task ChageNodeFavoriteAsync(int id, bool isFavorite) {
             Note? node = _nodes.Find(n => n.Id == id);
             if (node == null) {
                 throw new Exception("Node not found");
             }
             node.IsFavorite = isFavorite;
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,0 +1,28 @@
+services:
+  db:
+    image: mysql
+    #volumes:
+    #- ./docker/mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: appdatabase
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    networks:
+      - nodeapp
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin
+    ports:
+      - 8083:80
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    networks:
+      - nodeapp
+networks:
+  nodeapp:

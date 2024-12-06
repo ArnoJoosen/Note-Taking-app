@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Backend.Services;
 using Shared.dto;
-using Shared.Models;
 
 namespace Backend.ViewModels {
     public class TodoEditViewModel : INotifyPropertyChanged {
+        public event NotFountHandler NotFound;
+        public event ConnectionErrorHandler ConnectionError;
+
         IApiTodoService _api;
         int ItemId { get; set; }
         public string Title { get; set; } = "";
@@ -32,23 +29,41 @@ namespace Backend.ViewModels {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TodoEditViewModel(IApiTodoService api, int id) {
+        public TodoEditViewModel(IApiTodoService api) {
             _api = api;
+        }
+
+        public async Task Load(int id) {
             ItemId = id;
-            TodoReadDto todo = _api.GetTodoById(id);
-            Title = todo.Title;
-            Description = todo.Description;
-            HasDetline = todo.HasDetline;
-            IsCompleted = todo.IsCompleted;
+            try {
+                TodoReadDto todo = await _api.GetTodoByIdAsync(id);
+                Title = todo.Title;
+                Description = todo.Description;
+                HasDetline = todo.HasDetline;
+                IsCompleted = todo.IsCompleted;
+            } catch (NotFoundException) {
+                NotFound?.Invoke(id);
+                return;
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+                return;
+            }
         }
 
         public void Save() {
-            _api.UpdateTodo(new TodoWriteDto {
-                Title = Title,
-                Description = Description,
-                HasDetline = HasDetline,
-                Detline = DetLine,
-                IsCompleted = IsCompleted }, ItemId);
+            try {
+                _api.UpdateTodoAsync(new TodoWriteDto {
+                    Title = Title,
+                    Description = Description,
+                    HasDetline = HasDetline,
+                    Detline = DetLine,
+                    IsCompleted = IsCompleted
+                }, ItemId);
+            } catch (NotFoundException) {
+                NotFound?.Invoke(ItemId);
+            } catch (ConnectionErrorException) {
+                ConnectionError?.Invoke();
+            }
         }
     }
 }

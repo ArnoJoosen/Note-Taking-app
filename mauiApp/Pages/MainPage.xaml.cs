@@ -1,6 +1,5 @@
 ﻿namespace mauiApp.Pages;
 
-using Backend.Services;
 using Backend.ViewModels;
 
 public partial class MainPage : ContentPage {
@@ -11,6 +10,7 @@ public partial class MainPage : ContentPage {
         InitializeComponent();
         _vm = vm;
         BindingContext = vm;
+        _vm.ConnectionError += OnConnectionError;
     }
 
     protected override void OnAppearing() {
@@ -21,6 +21,15 @@ public partial class MainPage : ContentPage {
     public async void OnNoteTapped(object sender, TappedEventArgs e) {
         if (e.Parameter is int tappedItem) {
             await Shell.Current.GoToAsync($"NotePage?id={tappedItem}");
+        }
+    }
+    public async void OnConnectionError() {
+        var result = await DisplayAlert("Error", "Connection error", "Try Again", "Close");
+        if (result) { // Try Again
+            _vm.UpdateNodeFavorites();
+            _vm.UpdateTodoNotDone();
+        } else { // Close
+            System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
         }
     }
 }

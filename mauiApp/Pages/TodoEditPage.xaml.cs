@@ -1,5 +1,4 @@
 namespace mauiApp.Pages;
-using Shared.Models;
 using Backend.ViewModels;
 using Backend.Services;
 
@@ -8,23 +7,31 @@ public partial class TodoEditPage : ContentPage
 {
     private int _Id;
     TodoEditViewModel _vm;
-    IApiTodoService _api;
 
     public int TodoId {
         get => _Id;
         set {
             _Id = value;
-            LoadTodo();
+            _ = LoadTodo(); // LoadTodo is an async method so we need to wait for it to finish
         }
     }
 
-    private void LoadTodo() {
-        _vm = new TodoEditViewModel(_api, _Id);
+    private async Task LoadTodo() {
+        await _vm.Load(_Id);
         BindingContext = _vm;
+        Indicator.IsVisible = false;
+        TitleEditor.IsEnabled = true;
+        DescriptionEditor.IsEnabled = true;
+        HasDeadlineCheckbox.IsEnabled = true;
+        DeadlinePicker.IsEnabled = true;
+        CompletedCheckbox.IsEnabled = true;
+        SaveButton.IsEnabled = true;
     }
 
     public TodoEditPage(IApiTodoService api) {
-        _api = api;
+        _vm = new TodoEditViewModel(api);
+        _vm.NotFound += OnNotFound;
+        _vm.ConnectionError += OnConnectionError;
         InitializeComponent();
     }
 
@@ -38,5 +45,12 @@ public partial class TodoEditPage : ContentPage
             _vm.Save();
         }
         Navigation.PopAsync();
+    }
+
+    public void OnConnectionError() {
+        Navigation.PopToRootAsync(); // go back to the main page if there is a connection error
+    }
+    public void OnNotFound(int id) {
+        Navigation.PopAsync(); // go back to the previous page if the note is not found
     }
 }

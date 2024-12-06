@@ -7,17 +7,18 @@
              xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
              x:DataType="viemodel:NoteViewModel">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="✏️" Clicked="OnEditClicked"/>
+        <ToolbarItem Text="✏️" Clicked="OnEditClicked" IsEnabled="False"/>
     </ContentPage.ToolbarItems>
     <VerticalStackLayout>
-    <Grid RowDefinitions="Auto,Auto,*" Padding="10">
-        <Label Grid.Row="0" FontSize="Large" Text="{Binding Title}" />
+        <Grid RowDefinitions="Auto,Auto,*" Padding="10">
+            <ActivityIndicator x:Name="Indicator" IsRunning="True"/>
+            <Label Grid.Row="0" FontSize="Large" Text="{Binding Title}"/>
 
-        <Label Grid.Row="1" FontSize="Small" Text="{Binding CreatedAt, StringFormat='{0:g}'}" />
+            <Label Grid.Row="1" FontSize="Small" Text="{Binding CreatedAt, StringFormat='{0:g}'}"/>
 
-        <ScrollView Grid.Row="2" Margin="0,20,0,0">
-            <Label Text="{Binding Content}" TextType="Text" />
-        </ScrollView>
-    </Grid>
+            <ScrollView Grid.Row="2" Margin="0,20,0,0">
+                <Label Text="{Binding Content}" TextType="Text" />
+            </ScrollView>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

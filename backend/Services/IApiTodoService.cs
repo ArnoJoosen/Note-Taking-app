@@ -1,15 +1,14 @@
 using Shared.dto;
 
-namespace Backend.Services
-{
+namespace Backend.Services {
     public interface IApiTodoService {
-        public List<TodoListItemReadDto> GetTodos();
-        public List<TodoListItemReadDto> GetNotCompletedTodos();
+        public Task<List<TodoListItemReadDto>> GetTodosAsync();
+        public Task<List<TodoListItemReadDto>> GetNotCompletedTodosAsync();
+        public Task<TodoReadDto> GetTodoByIdAsync(int id);
         public TodoReadDto GetTodoById(int id);
-        public TodoListItemReadDto CreateTodo(TodoWriteDto todo);
-        public TodoReadDto UpdateTodo(TodoWriteDto todo, int id);
-        public void UpdateTodoState(int id, bool isCompleted);
-        public void DeleteTodo(int id);
-        
+        public Task<TodoListItemReadDto> CreateTodoAsync(TodoWriteDto todo);
+        public Task<TodoReadDto> UpdateTodoAsync(TodoWriteDto todo, int id);
+        public Task UpdateTodoStateAsync(int id, bool isCompleted);
+        public Task DeleteTodoAsync(int id);
     }
 }

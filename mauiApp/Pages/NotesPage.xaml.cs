@@ -10,6 +10,8 @@ public partial class NotePages : ContentPage {
     public NotePages(NotesViewModel vm) {
         _vm = vm;
         BindingContext = _vm;
+        _vm.NotFound += OnNotFound;
+        _vm.ConnectionError += OnConnectionError;
         InitializeComponent();
 	}
 
@@ -20,5 +22,12 @@ public partial class NotePages : ContentPage {
         if (e.Parameter is int tappedItem) {
             await Shell.Current.GoToAsync($"NotePage?id={tappedItem}");
         }
+    }
+    public void OnConnectionError() {
+        Navigation.PopToRootAsync(); // go back to the main page if there is a connection error
+    }
+    public void OnNotFound(int id) {
+        DisplayAlert("Note not found", $"Note with id {id} was not found", "OK");
+        _vm.UpdateNodeList();
     }
 }

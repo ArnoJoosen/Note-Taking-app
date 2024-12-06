@@ -9,50 +9,97 @@ namespace Backend.Services {
             _httpClient = httpClient;
         }
 
-        public List<TodoListItemReadDto> GetTodos() {
-            var response = _httpClient.GetAsync("http://localhost:5110/api/todo").Result;
-            response.EnsureSuccessStatusCode();
-            var todos = response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>().Result;
-            return todos;
+        public async Task<List<TodoListItemReadDto>> GetTodosAsync() {
+            try {
+                var response = await _httpClient.GetAsync("http://localhost:5110/api/todo");
+                var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
+                return todos;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
+            }
         }
 
-        public List<TodoListItemReadDto> GetNotCompletedTodos() {
-            var response = _httpClient.GetAsync("http://localhost:5110/api/todo/not-completed").Result;
-            response.EnsureSuccessStatusCode();
-            var todos = response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>().Result;
-            return todos;
+        public async Task<List<TodoListItemReadDto>> GetNotCompletedTodosAsync() {
+            try {
+                var response = await _httpClient.GetAsync("http://localhost:5110/api/todo/not-completed");
+                var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
+                return todos;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
+            }
+        }
+
+        public async Task<TodoReadDto> GetTodoByIdAsync(int id) {
+            try {
+                var response = await _httpClient.GetAsync($"http://localhost:5110/api/todo/{id}");
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+                var todo = await response.Content.ReadFromJsonAsync<TodoReadDto>();
+                return todo;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
+            }
         }
 
         public TodoReadDto GetTodoById(int id) {
-            var response = _httpClient.GetAsync($"http://localhost:5110/api/todo/{id}").Result;
-            response.EnsureSuccessStatusCode();
-            var todo = response.Content.ReadFromJsonAsync<TodoReadDto>().Result;
-            return todo;
+            try {
+                var response = _httpClient.GetAsync($"http://localhost:5110/api/todo/{id}").Result;
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+                var todo = response.Content.ReadFromJsonAsync<TodoReadDto>().Result;
+                return todo;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
+            }
         }
 
-        public TodoListItemReadDto CreateTodo(TodoWriteDto todo) {
-            var response = _httpClient.PostAsJsonAsync("http://localhost:5110/api/todo", todo).Result;
-            response.EnsureSuccessStatusCode();
-            var createdTodo = response.Content.ReadFromJsonAsync<TodoListItemReadDto>().Result;
-            return createdTodo;
+
+        public async Task<TodoListItemReadDto> CreateTodoAsync(TodoWriteDto todo) {
+            try {
+                var response = await _httpClient.PostAsJsonAsync("http://localhost:5110/api/todo", todo);
+                var createdTodo = await response.Content.ReadFromJsonAsync<TodoListItemReadDto>();
+                return createdTodo;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
+            }
         }
 
-        public TodoReadDto UpdateTodo(TodoWriteDto todo, int id) {
-            var response = _httpClient.PutAsJsonAsync($"http://localhost:5110/api/todo/{id}", todo).Result;
-            response.EnsureSuccessStatusCode();
-            var updatedTodo = response.Content.ReadFromJsonAsync<TodoReadDto>().Result;
-            return updatedTodo;
+        public async Task<TodoReadDto> UpdateTodoAsync(TodoWriteDto todo, int id) {
+            try {
+                var response = await _httpClient.PutAsJsonAsync($"http://localhost:5110/api/todo/{id}", todo);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+                var updatedTodo = await response.Content.ReadFromJsonAsync<TodoReadDto>();
+                return updatedTodo;
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
+            }
         }
 
-        public void UpdateTodoState(int id, bool isCompleted) {
-            var content = JsonContent.Create(new {});
-            var response = _httpClient.PutAsync($"http://localhost:5110/api/todo/{id}/state?isCompleted={isCompleted}", content).Result;
-            response.EnsureSuccessStatusCode();
+        public async Task UpdateTodoStateAsync(int id, bool isCompleted) {
+            try {
+                var content = JsonContent.Create(new {});
+                var response = await _httpClient.PutAsync($"http://localhost:5110/api/todo/{id}/state?isCompleted={isCompleted}", content);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
+            }
         }
 
-        public void DeleteTodo(int id) {
-            var response = _httpClient.DeleteAsync($"http://localhost:5110/api/todo/{id}").Result;
-            response.EnsureSuccessStatusCode();
+        public async Task DeleteTodoAsync(int id) {
+            try {
+                var response = await _httpClient.DeleteAsync($"http://localhost:5110/api/todo/{id}");
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
+                    throw new NotFoundException(id);
+                }
+            } catch (HttpRequestException) {
+                throw new ConnectionErrorException();
+            }
         }
     }
 }
