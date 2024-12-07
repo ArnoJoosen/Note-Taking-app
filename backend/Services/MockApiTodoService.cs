@@ -5,7 +5,8 @@ namespace Backend.Services {
     public class MockApiTodoService : IApiTodoService {
         List<Todo> _todos = new();
         int currentTodoId = 0;
-        
+
+        public string BaseAddress { get; set; } = "http://localhost:5110";
 
         public MockApiTodoService() {
             _todos.Add(new Todo { Id = currentTodoId++, Title = "First todo", Description = "This is the first todo", Detline = DateTime.Now, HasDetline = false, IsCompleted = true });

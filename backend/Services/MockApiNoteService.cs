@@ -6,6 +6,8 @@ namespace Backend.Services {
         int currentNodeId = 0;
         List<Note> _nodes = new();
 
+        public string BaseAddress { get; set; } = "http://localhost:5000";
+
         public MockApiNoteService() {
             _nodes.Add(new Note { Id = currentNodeId++, Content = "This is the first node", Title = "First node", CreatedAt = DateTime.Now, IsFavorite = true });
             _nodes.Add(new Note { Id = currentNodeId++, Content = "This is the second node", Title = "Second node", CreatedAt = DateTime.Now, IsFavorite = false });

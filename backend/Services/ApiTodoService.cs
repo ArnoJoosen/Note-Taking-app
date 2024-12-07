@@ -5,16 +5,15 @@ namespace Backend.Services {
     public class ApiTodoService : IApiTodoService {
         private readonly HttpClient _httpClient;
 
-        public string BaseUrl { get; set; }
+        public string BaseAddress { get; set; } = "http://localhost:5110";
 
-        public ApiTodoService(HttpClient httpClient, string baseUrl = "http://localhost:5110") {
+        public ApiTodoService(HttpClient httpClient) {
             _httpClient = httpClient;
-            BaseUrl = baseUrl;
         }
 
         public async Task<List<TodoListItemReadDto>> GetTodosAsync() {
             try {
-                var response = await _httpClient.GetAsync($"{BaseUrl}/api/todo");
+                var response = await _httpClient.GetAsync($"{BaseAddress}/api/todo");
                 var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
                 return todos;
             } catch (HttpRequestException) {
@@ -24,7 +23,7 @@ namespace Backend.Services {
 
         public async Task<List<TodoListItemReadDto>> GetNotCompletedTodosAsync() {
             try {
-                var response = await _httpClient.GetAsync($"{BaseUrl}/api/todo/not-completed");
+                var response = await _httpClient.GetAsync($"{BaseAddress}/api/todo/not-completed");
                 var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
                 return todos;
             } catch (HttpRequestException) {
@@ -34,7 +33,7 @@ namespace Backend.Services {
 
         public async Task<TodoReadDto> GetTodoByIdAsync(int id) {
             try {
-                var response = await _httpClient.GetAsync($"{BaseUrl}/api/todo/{id}");
+                var response = await _httpClient.GetAsync($"{BaseAddress}/api/todo/{id}");
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
@@ -47,7 +46,7 @@ namespace Backend.Services {
 
         public TodoReadDto GetTodoById(int id) {
             try {
-                var response = _httpClient.GetAsync($"{BaseUrl}/api/todo/{id}").Result;
+                var response = _httpClient.GetAsync($"{BaseAddress}/api/todo/{id}").Result;
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
@@ -61,7 +60,7 @@ namespace Backend.Services {
 
         public async Task<TodoListItemReadDto> CreateTodoAsync(TodoWriteDto todo) {
             try {
-                var response = await _httpClient.PostAsJsonAsync($"{BaseUrl}/api/api/todo", todo);
+                var response = await _httpClient.PostAsJsonAsync($"{BaseAddress}/api/api/todo", todo);
                 var createdTodo = await response.Content.ReadFromJsonAsync<TodoListItemReadDto>();
                 return createdTodo;
             } catch (HttpRequestException) {
@@ -71,7 +70,7 @@ namespace Backend.Services {
 
         public async Task<TodoReadDto> UpdateTodoAsync(TodoWriteDto todo, int id) {
             try {
-                var response = await _httpClient.PutAsJsonAsync($"{BaseUrl}/api/todo/{id}", todo);
+                var response = await _httpClient.PutAsJsonAsync($"{BaseAddress}/api/todo/{id}", todo);
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
