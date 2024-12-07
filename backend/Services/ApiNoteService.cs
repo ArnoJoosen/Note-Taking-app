@@ -5,16 +5,19 @@ using System.Net.Http.Json;
 namespace backend.Services {
     public class ApiNoteService : IApiNoteService {
         private readonly HttpClient _httpClient;
-        public string BaseUrl { get; set; }
+        string _baseUrl;
 
-        public ApiNoteService(HttpClient httpClient, string baseUrl = "http://localhost:5110") {
+        public ApiNoteService(HttpClient httpClient) {
             _httpClient = httpClient;
-            BaseUrl = baseUrl;
+            _baseUrl = _httpClient.BaseAddress.ToString();
+            if (_baseUrl == null) {
+                _baseUrl = "http://localhost:5110/"; // base url for local development
+            }
         }
 
         public async Task<List<NoteListItemReadDto>> GetNodesAsync() {
             try {
-                var response = await _httpClient.GetAsync($"{BaseUrl}/api/node/");
+                var response = await _httpClient.GetAsync($"{_baseUrl}api/node/");
                 var nodes = await response.Content.ReadFromJsonAsync<List<NoteListItemReadDto>>();
                 return nodes;
             } catch (HttpRequestException) {
@@ -23,7 +26,7 @@ namespace backend.Services {
         }
         public async Task<List<NoteListItemReadDto>> GetFavoriteNodesAsync() {
             try {
-                var response = await _httpClient.GetAsync($"{BaseUrl}/api/node/favorite");
+                var response = await _httpClient.GetAsync($"{_baseUrl}api/node/favorite");
                 var nodes = await response.Content.ReadFromJsonAsync<List<NoteListItemReadDto>>();
                 return nodes ?? new List<NoteListItemReadDto>(); // if null return empty list
             } catch (HttpRequestException) {
@@ -32,7 +35,7 @@ namespace backend.Services {
         }
         public async Task<NoteReadDto> GetNodeByIdAsync(int id) {
             try {
-                var response = await _httpClient.GetAsync($"{BaseUrl}/api/node/{id}");
+                var response = await _httpClient.GetAsync($"{_baseUrl}api/node/{id}");
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
@@ -45,7 +48,7 @@ namespace backend.Services {
 
         public NoteReadDto GetNodeById(int id) {
             try {
-                var response = _httpClient.GetAsync($"{BaseUrl}/api/node/{id}").Result;
+                var response = _httpClient.GetAsync($"{_baseUrl}api/node/{id}").Result;
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
@@ -58,7 +61,7 @@ namespace backend.Services {
 
         public async Task<NoteReadDto> CreateNodeAsync(NoteWriteDto node) {
             try {
-                var response = await _httpClient.PostAsJsonAsync($"{BaseUrl}/api/node", node);
+                var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/node", node);
                 var createdNode = await response.Content.ReadFromJsonAsync<NoteReadDto>();
                 return createdNode;
             } catch (HttpRequestException) {
@@ -67,7 +70,7 @@ namespace backend.Services {
         }
         public async Task UpdateNodeAsync(NoteWriteDto node, int id) {
             try {
-                var response = await _httpClient.PutAsJsonAsync($"{BaseUrl}/api/node/{id}", node);
+                var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}api/node/{id}", node);
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
@@ -77,7 +80,7 @@ namespace backend.Services {
         }
         public async Task DeleteNodeAsync(int id) {
             try {
-                var response = await _httpClient.DeleteAsync($"{BaseUrl}/api/node/{id}");
+                var response = await _httpClient.DeleteAsync($"{_baseUrl}api/node/{id}");
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
@@ -88,7 +91,7 @@ namespace backend.Services {
         public async Task ChageNodeFavoriteAsync(int id, bool isFavorite) {
             try {
                 var content = JsonContent.Create(new { }); // Todo remove this
-                var response = _httpClient.PutAsync($"{BaseUrl}/api/node/{id}/favorite?isFavorite={isFavorite}", content).Result;
+                var response = _httpClient.PutAsync($"{_baseUrl}api/node/{id}/favorite?isFavorite={isFavorite}", content).Result;
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
