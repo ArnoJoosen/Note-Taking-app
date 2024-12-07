@@ -74,10 +74,10 @@ namespace Backend.ViewModels {
             
         }
 
-        public void ChangeDoneState(int id) {
+        public async void ChangeDoneState(int id) {
             bool done = ObservableTodoItems.First(t => t.Id == id).IsCompleted;
             try {
-                _api.UpdateTodoStateAsync(id, !done);
+                await _api.UpdateTodoStateAsync(id, !done);
                 UpdateTodoList();
             } catch (NotFoundException) {
                 NotFound?.Invoke(id);
