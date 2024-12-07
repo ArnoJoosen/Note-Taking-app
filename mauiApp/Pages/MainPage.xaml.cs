@@ -8,7 +8,7 @@ public partial class MainPage : ContentPage {
     MainViewModel _vm;
     IApiNoteService _apiNote;
     IApiTodoService _apiTodo;
-
+    bool _isErrorWindowOpen = false;
     public MainPage(MainViewModel vm, IApiNoteService apiNote, IApiTodoService apiTodo) {
         InitializeComponent();
         _vm = vm;
@@ -29,6 +29,9 @@ public partial class MainPage : ContentPage {
         }
     }
     public async void OnConnectionError() {
+        if (_isErrorWindowOpen) return; // Prevent multiple error windows
+        _isErrorWindowOpen = true;
+
         string result = await DisplayPromptAsync(
             "Connection Error",
             "Please enter new base URL:",
@@ -44,5 +47,6 @@ public partial class MainPage : ContentPage {
         } else { // User cancelled
             System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
         }
+        _isErrorWindowOpen = false; // Reset the flag
     }
 }

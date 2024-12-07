@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using mauiApp.Pages;
 using Backend.Services;
 using backend.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace mauiApp;
 
@@ -16,9 +17,18 @@ public static class MauiProgram {
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		builder.Logging.AddDebug();
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
 
-        builder.Services.AddSingleton<HttpClient>(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5110") });
+        builder.Logging.AddDebug();
+
+        string baseUrl = configuration["ApiSettings:BaseUrl"];
+        if (baseUrl == null) {
+            throw new ArgumentNullException("ApiSettings:BaseUrl");
+        }
+        builder.Services.AddSingleton<HttpClient>(sp => new HttpClient { BaseAddress = new Uri(baseUrl) });
 		builder.Services.AddSingleton<IApiTodoService, ApiTodoService>();
 		builder.Services.AddSingleton<IApiNoteService, ApiNoteService>();
 

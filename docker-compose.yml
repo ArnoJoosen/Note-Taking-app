@@ -45,12 +45,10 @@ services:
     depends_on:
       - db
       - migration-service
-    environment:
-      - ASPNETCORE_URLS=http://+:5110
     networks:
       - node-api
     ports:
-      - 5110:5110
+      - 80:80
 
 networks:
   node-api:

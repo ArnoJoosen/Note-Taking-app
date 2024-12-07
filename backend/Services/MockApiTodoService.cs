@@ -5,7 +5,6 @@ namespace Backend.Services {
     public class MockApiTodoService : IApiTodoService {
         List<Todo> _todos = new();
         int currentTodoId = 0;
-
         public string BaseAddress { get; set; } = "http://localhost:5110";
 
         public MockApiTodoService() {

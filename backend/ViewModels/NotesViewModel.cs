@@ -40,10 +40,10 @@ namespace Backend.ViewModels {
             }
         }
 
-        public void AddNode() {
+        public async void AddNode() {
             NoteWriteDto node = new NoteWriteDto { Title = InputTitle, Content = "" };
             try {
-                _api.CreateNodeAsync(node);
+                await _api.CreateNodeAsync(node);
                 UpdateNodeList();
             } catch (ConnectionErrorException) {
                 ConnectionError?.Invoke();

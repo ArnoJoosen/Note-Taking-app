@@ -5,10 +5,11 @@ namespace Backend.Services {
     public class ApiTodoService : IApiTodoService {
         private readonly HttpClient _httpClient;
 
-        public string BaseAddress { get; set; } = "http://localhost:5110";
+        public string BaseAddress { get; set; }
 
         public ApiTodoService(HttpClient httpClient) {
             _httpClient = httpClient;
+            BaseAddress = _httpClient.BaseAddress.ToString().TrimEnd('/');
         }
 
         public async Task<List<TodoListItemReadDto>> GetTodosAsync() {
@@ -60,7 +61,7 @@ namespace Backend.Services {
 
         public async Task<TodoListItemReadDto> CreateTodoAsync(TodoWriteDto todo) {
             try {
-                var response = await _httpClient.PostAsJsonAsync($"{BaseAddress}/api/api/todo", todo);
+                var response = await _httpClient.PostAsJsonAsync($"{BaseAddress}/api/todo", todo);
                 var createdTodo = await response.Content.ReadFromJsonAsync<TodoListItemReadDto>();
                 return createdTodo;
             } catch (HttpRequestException) {
@@ -84,7 +85,7 @@ namespace Backend.Services {
         public async Task UpdateTodoStateAsync(int id, bool isCompleted) {
             try {
                 var content = JsonContent.Create(new {});
-                var response = await _httpClient.PutAsync($"http://localhost:5110/api/todo/{id}/state?isCompleted={isCompleted}", content);
+                var response = await _httpClient.PutAsync($"{BaseAddress}/api/todo/{id}/state?isCompleted={isCompleted}", content);
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
@@ -95,7 +96,7 @@ namespace Backend.Services {
 
         public async Task DeleteTodoAsync(int id) {
             try {
-                var response = await _httpClient.DeleteAsync($"http://localhost:5110/api/todo/{id}");
+                var response = await _httpClient.DeleteAsync($"{BaseAddress}/api/todo/{id}");
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }

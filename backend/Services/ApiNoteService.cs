@@ -7,9 +7,9 @@ namespace backend.Services {
         private readonly HttpClient _httpClient;
         public string BaseAddress { get; set; } = "http://localhost:5110";
 
-        public ApiNoteService(HttpClient httpClient, string baseUrl = "http://localhost:5110") {
+        public ApiNoteService(HttpClient httpClient) {
             _httpClient = httpClient;
-            BaseAddress = baseUrl;
+            BaseAddress = _httpClient.BaseAddress.ToString().TrimEnd('/');
         }
 
         public async Task<List<NoteListItemReadDto>> GetNodesAsync() {
