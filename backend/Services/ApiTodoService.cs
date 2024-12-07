@@ -84,8 +84,7 @@ namespace Backend.Services {
 
         public async Task UpdateTodoStateAsync(int id, bool isCompleted) {
             try {
-                var content = JsonContent.Create(new {});
-                var response = await _httpClient.PutAsync($"{BaseAddress}/api/todo/{id}/state?isCompleted={isCompleted}", content);
+                var response = await _httpClient.PutAsync($"{BaseAddress}/api/todo/{id}/state?isCompleted={isCompleted}", null);
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }

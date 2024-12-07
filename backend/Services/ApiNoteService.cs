@@ -87,8 +87,7 @@ namespace backend.Services {
         }
         public async Task ChageNodeFavoriteAsync(int id, bool isFavorite) {
             try {
-                var content = JsonContent.Create(new { }); // Todo remove this
-                var response = _httpClient.PutAsync($"{BaseAddress}/api/node/{id}/favorite?isFavorite={isFavorite}", content).Result;
+                var response = await _httpClient.PutAsync($"{BaseAddress}/api/node/{id}/favorite?isFavorite={isFavorite}", null);
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) {
                     throw new NotFoundException(id);
                 }
