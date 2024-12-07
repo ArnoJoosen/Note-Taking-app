@@ -19,6 +19,7 @@ migration-service  | Done.
 ## Build and run client
 - Use visual studio to compile and run the client for android or windows.
   - For android, you need to change the IP address in the `appsettings.json` file to the IP address of the server.
+- When the server is not connected to the client, the client will show a message that says And give you the option to enter the IP address of the server or exit the app.
 
 # Example of the Android client
 ### Home
@@ -46,6 +47,4 @@ migration-service  | Done.
 <img src="./docs/images/windows_app_Todo.png" alt="Example of the Windows client" width="300"/>
 <img src="./docs/images/windows_app_Todo_edit.png" alt="Example of the Windows client" width="300"/>
 
-When the server is not connected to the client, the client will show a message that says
-And give you the option to enter the IP address of the server or exit the app.
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/1k7fPbWD)
