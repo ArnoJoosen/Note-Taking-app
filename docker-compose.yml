@@ -1,0 +1,54 @@
+services:
+  db:
+    image: mysql
+    container_name: api-db
+    volumes:
+      - ./docker/mysql/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    # - ./mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: appdatabase
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    networks:
+      - node-api
+    ports:
+      - 3306:3306
+
+  migration-service:
+    build:
+      context: ./
+      dockerfile: docker/server/Dockerfile.migration
+    container_name: migration-service
+    depends_on:
+      - db
+    networks:
+      - node-api
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin
+    ports:
+      - 8083:80
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    networks:
+      - node-api
+
+  api-service:
+    build:
+      context: ./
+      dockerfile: docker/server/Dockerfile.api
+    container_name: api-service
+    depends_on:
+      - db
+      - migration-service
+    networks:
+      - node-api
+    ports:
+      - 80:80
+
+networks:
+  node-api:

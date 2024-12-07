@@ -1,0 +1,23 @@
+#Compiling
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /app
+# Copy solution files
+COPY ["server/server.csproj", "server/"]
+COPY ["Shared/Shared.csproj", "Shared/"]
+# Restore dependencies
+RUN dotnet restore "server/server.csproj"
+# Copy the rest of the files
+COPY server/. server/
+COPY Shared/. Shared/
+RUN dotnet publish "server/server.csproj" -c Release -o out
+
+# Create runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+ENV ASPNETCORE_URLS=http://+:80
+
+EXPOSE 80
+
+COPY --from=build app/out .
+ENTRYPOINT ["dotnet", "server.dll"]

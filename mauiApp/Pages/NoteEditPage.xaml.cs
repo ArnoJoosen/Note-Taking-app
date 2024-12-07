@@ -34,9 +34,9 @@ public partial class NoteEditPage : ContentPage {
         ContentEdit.IsEnabled = true;
     }
 
-    public void OnSaveClicked(object sender, EventArgs e) {
-        _vm.Save();
-        Navigation.PopAsync();
+    public async void OnSaveClicked(object sender, EventArgs e) {
+        await _vm.Save();
+        await Navigation.PopAsync();
     }
 
     public void OnConnectionError() {

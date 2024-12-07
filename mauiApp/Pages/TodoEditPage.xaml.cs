@@ -40,11 +40,11 @@ public partial class TodoEditPage : ContentPage
         return true;
     }
 
-    public void OnClickSave(object sender, EventArgs e) {
+    public async void OnClickSave(object sender, EventArgs e) {
         if (_vm != null) {
-            _vm.Save();
+            await _vm.Save();
         }
-        Navigation.PopAsync();
+        await Navigation.PopAsync();
     }
 
     public void OnConnectionError() {

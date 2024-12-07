@@ -2,6 +2,7 @@
 
 namespace Backend.Services {
     public interface IApiNoteService {
+        public string BaseAddress { get; set; }
         public Task<List<NoteListItemReadDto>> GetNodesAsync();
         public Task<List<NoteListItemReadDto>> GetFavoriteNodesAsync();
         public Task<NoteReadDto> GetNodeByIdAsync(int id);

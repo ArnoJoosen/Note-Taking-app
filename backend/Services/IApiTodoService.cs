@@ -2,6 +2,7 @@ using Shared.dto;
 
 namespace Backend.Services {
     public interface IApiTodoService {
+        public string BaseAddress { get; set; }
         public Task<List<TodoListItemReadDto>> GetTodosAsync();
         public Task<List<TodoListItemReadDto>> GetNotCompletedTodosAsync();
         public Task<TodoReadDto> GetTodoByIdAsync(int id);
