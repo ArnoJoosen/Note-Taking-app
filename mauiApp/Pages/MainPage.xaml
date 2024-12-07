@@ -8,68 +8,72 @@
              x:DataType="viemodel:MainViewModel">
     <ScrollView>
             <VerticalStackLayout Margin="10">
-            <Label Text="Favorite Notes" FontSize="Large" />
-            <CollectionView ItemsSource="{Binding FavoritesNods}" SelectionMode="None">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dto:NoteListItemReadDto">
-                        <Frame>
-                            <Label Text="{Binding Title}"
+            <VerticalStackLayout>
+                <Label Text="Favorite Notes" FontSize="Large" />
+                <CollectionView ItemsSource="{Binding FavoritesNods}" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="dto:NoteListItemReadDto">
+                            <Frame>
+                                <Label Text="{Binding Title}"
                                    FontSize="24"/>
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
                                         Tapped="OnNoteTapped"
                                         CommandParameter="{Binding Id}"/>
-                            </Frame.GestureRecognizers>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
 
-            <Label Text="Active Todos" FontSize="Large" />
+            <VerticalStackLayout>
+                <Label Text="Active Todos" FontSize="Large" />
 
-            <CollectionView ItemsSource="{Binding NotCompletedTodos}" SelectionMode="None">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dto:TodoListItemReadDto">
-                        <SwipeView>
-                            <SwipeView.LeftItems>
-                                <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="Done"
+                <CollectionView ItemsSource="{Binding NotCompletedTodos}" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="dto:TodoListItemReadDto">
+                            <SwipeView>
+                                <SwipeView.LeftItems>
+                                    <SwipeItems Mode="Execute">
+                                        <SwipeItem Text="Done"
                                        BackgroundColor="Green"
                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:MainViewModel}}, Path=CompleteTodoCommand}"
                                        CommandParameter="{Binding Id}"/>
-                                </SwipeItems>
-                            </SwipeView.LeftItems>
-                            <Frame>
-                                <HorizontalStackLayout Grid.Column="0" Spacing="10">
-                                    <Button Text="✓"
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <Frame>
+                                    <HorizontalStackLayout Grid.Column="0" Spacing="10">
+                                        <Button Text="✓"
                                         WidthRequest="10"
                                         HeightRequest="10"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viemodel:MainViewModel}}, Path=CompleteTodoCommand}"
                                         CommandParameter="{Binding Id}">
-                                        <Button.IsVisible>
-                                            <OnIdiom x:TypeArguments="x:Boolean" Desktop="True" Phone="False" Tablet="False" TV="False"/>
-                                        </Button.IsVisible>
-                                    </Button>
-                                    <StackLayout>
-                                        <Label Text="{Binding Title}" FontSize="24"/>
-                                        <Label Text="{Binding Detline, StringFormat='{0:dd-MM-yyyy}'}">
-                                            <Label.IsVisible>
-                                                <Binding Path="HasDetline"/>
-                                            </Label.IsVisible>
-                                        </Label>
-                                    </StackLayout>
-                                </HorizontalStackLayout>
-                            </Frame>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                            <Button.IsVisible>
+                                                <OnIdiom x:TypeArguments="x:Boolean" Desktop="True" Phone="False" Tablet="False" TV="False"/>
+                                            </Button.IsVisible>
+                                        </Button>
+                                        <StackLayout>
+                                            <Label Text="{Binding Title}" FontSize="24"/>
+                                            <Label Text="{Binding Detline, StringFormat='{0:dd-MM-yyyy}'}">
+                                                <Label.IsVisible>
+                                                    <Binding Path="HasDetline"/>
+                                                </Label.IsVisible>
+                                            </Label>
+                                        </StackLayout>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
 
         </VerticalStackLayout>
     </ScrollView>

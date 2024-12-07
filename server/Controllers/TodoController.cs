@@ -32,7 +32,18 @@ namespace Server.Controllers {
 
         [HttpGet("not-completed")]
         public ActionResult GetNotCompletedTodos() {
-            return Ok(_todoRepo.GetNotCompletedTodos());
+            var todos = _todoRepo.GetNotCompletedTodos();
+            List<TodoListItemReadDto> todoListItemReadDtos = new();
+            foreach (var todo in todos) {
+                todoListItemReadDtos.Add(new TodoListItemReadDto {
+                    Id = todo.Id,
+                    Title = todo.Title,
+                    Detline = todo.Detline,
+                    HasDetline = todo.HasDetline,
+                    IsCompleted = todo.IsCompleted
+                });
+            }
+            return Ok(todoListItemReadDtos);
         }
 
         [HttpGet("{id}")]

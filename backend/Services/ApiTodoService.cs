@@ -16,7 +16,7 @@ namespace Backend.Services {
             try {
                 var response = await _httpClient.GetAsync($"{BaseAddress}/api/todo");
                 var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
-                return todos;
+                return todos ?? new List<TodoListItemReadDto>(); // if null return empty list;
             } catch (HttpRequestException) {
                 throw new ConnectionErrorException();
             }
@@ -24,9 +24,9 @@ namespace Backend.Services {
 
         public async Task<List<TodoListItemReadDto>> GetNotCompletedTodosAsync() {
             try {
-                var response = await _httpClient.GetAsync($"{BaseAddress}/api/todo/not-completed");
+                var response = await _httpClient.GetAsync($"{BaseAddress}/api/todo");
                 var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
-                return todos;
+                return todos ?? new List<TodoListItemReadDto>(); // if null return empty list;
             } catch (HttpRequestException) {
                 throw new ConnectionErrorException();
             }

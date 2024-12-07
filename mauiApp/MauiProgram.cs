@@ -4,6 +4,7 @@ using mauiApp.Pages;
 using Backend.Services;
 using backend.Services;
 using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace mauiApp;
 
@@ -17,18 +18,26 @@ public static class MauiProgram {
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .Build();
+        var a = Assembly.GetExecutingAssembly();
+        using var stream = a.GetManifestResourceStream("mauiApp.appsettings.json");
+        if (stream == null) {
+            throw new InvalidOperationException("The resource stream 'mauiApp.appsettings.json' could not be found.");
+        }
+
+        var config = new ConfigurationBuilder()
+                    .AddJsonStream(stream)
+                    .Build();
+
+
+        builder.Configuration.AddConfiguration(config);
 
         builder.Logging.AddDebug();
 
-        string baseUrl = configuration["ApiSettings:BaseUrl"];
-        if (baseUrl == null) {
-            throw new ArgumentNullException("ApiSettings:BaseUrl");
+        Settings settings = builder.Configuration.GetRequiredSection("Settings").Get<Settings>();
+        if (settings.BaseUrl == null) {
+            throw new InvalidOperationException("The 'BaseUrl' setting is missing.");
         }
-        builder.Services.AddSingleton<HttpClient>(sp => new HttpClient { BaseAddress = new Uri(baseUrl) });
+        builder.Services.AddSingleton<HttpClient>(sp => new HttpClient { BaseAddress = new Uri(settings.BaseUrl) });
 		builder.Services.AddSingleton<IApiTodoService, ApiTodoService>();
 		builder.Services.AddSingleton<IApiNoteService, ApiNoteService>();
 
@@ -52,4 +61,8 @@ public static class MauiProgram {
 
         return builder.Build();
 	}
+
+    public class Settings {
+        public string BaseUrl { get; set; }
+    }
 }
