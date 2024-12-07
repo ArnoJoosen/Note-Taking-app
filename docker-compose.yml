@@ -4,7 +4,7 @@ services:
     container_name: api-db
     volumes:
       - ./docker/mysql/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-    # - ./mysql/data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: appdatabase
@@ -52,3 +52,6 @@ services:
 
 networks:
   node-api:
+
+volumes:
+  mysql-data:
