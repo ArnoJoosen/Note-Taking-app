@@ -44,7 +44,7 @@ migration-service  | Done.
 
 ### Todos
 <img src="./docs/images/windows_app_Todo.png" alt="Example of the Windows client" width="300"/>
-<img src="./docs/images/windows_app_todo_edit.png" alt="Example of the Windows client" width="300"/>
+<img src="./docs/images/windows_app_Todo_edit.png" alt="Example of the Windows client" width="300"/>
 
 When the server is not connected to the client, the client will show a message that says
 And give you the option to enter the IP address of the server or exit the app.
