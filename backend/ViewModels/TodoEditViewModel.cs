@@ -50,9 +50,9 @@ namespace Backend.ViewModels {
             }
         }
 
-        public void Save() {
+        public Task Save() {
             try {
-                _api.UpdateTodoAsync(new TodoWriteDto {
+                return _api.UpdateTodoAsync(new TodoWriteDto {
                     Title = Title,
                     Description = Description,
                     HasDetline = HasDetline,
@@ -61,8 +61,10 @@ namespace Backend.ViewModels {
                 }, ItemId);
             } catch (NotFoundException) {
                 NotFound?.Invoke(ItemId);
+                return Task.CompletedTask;
             } catch (ConnectionErrorException) {
                 ConnectionError?.Invoke();
+                return Task.CompletedTask;
             }
         }
     }
