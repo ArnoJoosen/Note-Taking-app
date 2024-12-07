@@ -27,19 +27,19 @@ namespace Backend.ViewModels {
             }
         }
 
-        public void Save() {
+        public Task Save() {
             NoteWriteDto node = new NoteWriteDto {
                 Title = Title,
                 Content = Content
             };
             try {
-                _api.UpdateNodeAsync(node, Id);
+                return _api.UpdateNodeAsync(node, Id);
             } catch (NotFoundException) {
                 NotFound?.Invoke(Id);
-                return;
+                return Task.CompletedTask;
             } catch (ConnectionErrorException) {
                 ConnectionError?.Invoke();
-                return;
+                return Task.CompletedTask;
             }
         }
     }
