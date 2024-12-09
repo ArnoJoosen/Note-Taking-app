@@ -67,10 +67,10 @@ namespace Backend.ViewModels {
             }
         }
 
-        public void ChangeNodeFavorite(int id) {
-            bool faborite = ObservableNotes.FirstOrDefault(n => n.Id == id).IsFavorite;
+        public async void ChangeNodeFavorite(int id) {
             try {
-                _api.ChageNodeFavoriteAsync(id, !faborite);
+                var faborite = ObservableNotes.FirstOrDefault(n => n.Id == id);
+                await _api.ChageNodeFavoriteAsync(id, !faborite.IsFavorite);
                 UpdateNodeList();
             } catch (NotFoundException) {
                 NotFound?.Invoke(id);
