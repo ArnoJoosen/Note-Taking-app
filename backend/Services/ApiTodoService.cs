@@ -24,7 +24,7 @@ namespace Backend.Services {
 
         public async Task<List<TodoListItemReadDto>> GetNotCompletedTodosAsync() {
             try {
-                var response = await _httpClient.GetAsync($"{BaseAddress}/api/todo");
+                var response = await _httpClient.GetAsync($"{BaseAddress}/api/todo/not-completed");
                 var todos = await response.Content.ReadFromJsonAsync<List<TodoListItemReadDto>>();
                 return todos ?? new List<TodoListItemReadDto>(); // if null return empty list;
             } catch (HttpRequestException) {

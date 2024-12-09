@@ -1,5 +1,5 @@
 # Note-Taking-app
-A simple and intuitive app for creating, editing, and organizing notes.
+A simple and intuitive app for creating, editing, and organizing notes and todos.
 
 # Build Instructions
 ## Build and run server in docker
